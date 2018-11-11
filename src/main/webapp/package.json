@@ -1,0 +1,17 @@
+{
+  "name": "famtree",
+  "version": "1.0.0",
+  "description": "famtree",
+  "main": "index.htm",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "riot": "^3.13.1"
+  },
+  "devDependencies": {
+    "riot": "^3.13.1"
+  }
+}
