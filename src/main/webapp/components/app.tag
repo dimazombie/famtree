@@ -1,11 +1,13 @@
 <app>
     <div class="app">
-        Test page
+       <title-bar/>
+       <main-page/>
     </div>
 
     <style>
         .app{
             padding: 0px;
+            background-color: lightblue;
         }
     </style>
     <script>
