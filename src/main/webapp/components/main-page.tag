@@ -9,12 +9,15 @@
         padding: 0;
     }
 
+
+
     .tree {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #eee;
+        background: #DBC089;
+        background: linear-gradient(to top, #DBC089 0%, #EAD4A2 36%, #FFFFFF 100%);
     }
 
     .tree ul {
@@ -41,12 +44,12 @@
     .tree li::before, .tree li::after{
     	content: '';
     	position: absolute; top: 0; right: 50%;
-    	border-top: 1px solid #ccc;
+    	border-top: 1px solid #be9656;
     	width: 50%; height: 20px;
     }
     .tree li::after{
     	right: auto; left: 50%;
-    	border-left: 1px solid #ccc;
+    	border-left: 1px solid #be9656;
     }
 
     /*We need to remove left-right connectors from elements without
@@ -62,7 +65,7 @@
     }
     /*Adding back the vertical connector to the last nodes*/
     .tree li:last-child::before{
-    	border-right: 1px solid #ccc;
+    	border-right: 1px solid #be9656;
     	border-radius: 0 5px 0 0;
     	-webkit-border-radius: 0 5px 0 0;
     	-moz-border-radius: 0 5px 0 0;
@@ -77,12 +80,12 @@
     .tree ul ul::before{
     	content: '';
     	position: absolute; top: 0; left: 50%;
-    	border-left: 1px solid #ccc;
+    	border-left: 1px solid #be9656;
     	width: 0; height: 20px;
     }
 
     .tree li a{
-    	border: 1px solid #ccc;
+    	border: 1px solid #be9656;
     	padding: 5px 10px;
     	text-decoration: none;
     	color: #666;

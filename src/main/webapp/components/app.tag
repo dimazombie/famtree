@@ -7,7 +7,6 @@
     <style>
         .app{
             padding: 0px;
-            background-color: lightblue;
         }
     </style>
     <script>
