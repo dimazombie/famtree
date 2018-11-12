@@ -2,12 +2,19 @@
   <div class="tree">
     <node children={this.children} if={this.children}>
   </div>
+
   <style>
-    /*Now the CSS*/
-    * {margin: 0; padding: 0;}
+    * {
+        margin: 0;
+        padding: 0;
+    }
 
     .tree {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
     }
 
     .tree ul {
@@ -27,7 +34,6 @@
     	transition: all 0.5s;
     	-webkit-transition: all 0.5s;
     	-moz-transition: all 0.5s;
-
     }
 
     /*We will use ::before and ::after to draw the connectors*/
@@ -116,7 +122,13 @@
                            name: 'child folder',
                            children: [
                              { name: 'hello' },
-                             { name: 'wat' }
+                             { name: 'wat',
+                               children: [
+                                 { name: 'hello' },
+                                 { name: 'wat' }
+                               ]
+
+                             }
                            ]
                          }
                        ]
