@@ -2,14 +2,21 @@
   <div class="tree">
     <node children={this.children} if={this.children}>
   </div>
-
+  <div id="inner_remaining"></div>
   <style>
     * {
         margin: 0;
         padding: 0;
     }
 
-
+    #inner_remaining {
+        position: absolute;
+        top: 100px;
+        bottom: 0;
+        width: 100%;
+        background: #DBC089;
+        z-index: 1;
+    }
 
     .tree {
         display: flex;
@@ -18,6 +25,9 @@
         align-items: center;
         background: #DBC089;
         background: linear-gradient(to top, #DBC089 0%, #EAD4A2 36%, #FFFFFF 100%);
+        position: relative;
+        min-height:300px;
+        z-index: 3;
     }
 
     .tree ul {
@@ -104,7 +114,9 @@
 
   </style>
   <script>
-    this.children = [{
+
+  this.children = [{ name: 'My Tree' }];
+    /*this.children = [{
                    name: 'My Tree',
                    children: [
                      { name: 'hello' },
@@ -137,6 +149,6 @@
                        ]
                      }
                    ]
-                 }];
+                 }];*/
   </script>
 </main-page>

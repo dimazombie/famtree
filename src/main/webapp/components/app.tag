@@ -5,9 +5,7 @@
     </div>
 
     <style>
-        .app{
-            padding: 0px;
-        }
+
     </style>
     <script>
 
