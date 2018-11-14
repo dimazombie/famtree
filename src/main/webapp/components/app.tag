@@ -1,7 +1,7 @@
 <app>
     <div class="app">
-       <title-bar/>
-       <main-page/>
+    
+       <login-page/>
     </div>
 
     <style>

@@ -1,4 +1,5 @@
 <main-page>
+  <title-bar/>
   <div class="tree">
     <node children={this.children} if={this.children}>
   </div>
