@@ -14,11 +14,20 @@ import java.util.List;
 @Produces("application/json")
 public class NodeResource {
     @GET
+    @Path("111")
     public List<Node> getNodes() {
         return Arrays.asList(
                 new Node(1L,null, new Person("John",null,"Doe",new Date())),
                 new Node(2L,1L, new Person("Mark",null,"Doe",new Date())),
                 new Node(3L,1L, new Person("Susan",null,"Doe",new Date()))
+        );
+    }
+
+    @GET
+    @Path("222")
+    public List<Node> getNodesSecured() {
+        return Arrays.asList(
+                new Node(1L,null, new Person("Secured",null,"Doe",new Date()))
         );
     }
 }

@@ -1,9 +1,9 @@
 <login-page>
     <div class="form">
-        <input class="form-control" type="email" ref="inputEmail" placeholder="username" required autofocus onKeyPress={checkSubmit}>
+        <input class="form-control" type="username" ref="inputUsername" placeholder="username" required autofocus onKeyPress={checkSubmit}>
         <input class="form-control" type="password" ref="inputPassword" placeholder="password" required onKeyPress={checkSubmit}>
         <div class="btn-login" onclick={authenticate}>LOGIN</div>
-        <div class="error-block" if={this.error_authentication}>Incorrect Email or Password...</div>
+        <div class="error-block" if={this.error_authentication}>Incorrect Username or Password...</div>
     </div>
 
   <style>
@@ -61,29 +61,30 @@
       this.error = null;
 
       authenticate = ()=> {
-        var email = this.refs.inputEmail.value;
-        var pass = this.refs.inputPassword.value;
-        this.refs.inputEmail.value = null;
+        var username = this.refs.inputUsername.value;
+        var password = this.refs.inputPassword.value;
+        this.refs.inputUsername.value = null;
         this.refs.inputPassword.value = null;
 
-        logger.debug("loginpage: try to authenticate");
+        console.log("loginpage: try to authenticate");
         var token = null;
 
         try{
-            token = gateway.authentication(email, pass);
-            this.error_connection = false;
-
+            token = gateway.authentication(username, password);
+            console.log(token);
+            //this.error_connection = false;
             if (token) {
-                logger.debug('loginpage: successfully authenticated');
-                opts.onlogin(token);
+                console.log('loginpage: successfully authenticated');
+                document.cookie = "token="+token;
             }
             else {
-                logger.debug('loginpage: authentication failed');
+                console.log('loginpage: authentication failed');
                 this.error_authentication = true;
             }
         }
         catch(e){
-            logger.error('loginpage: connection error - ' + e);
+            console.log('loginpage: connection error>');
+            console.log(e);
             this.error_authentication = false;
             this.error_connection = true;
         }
