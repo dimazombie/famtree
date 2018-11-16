@@ -58,7 +58,7 @@
   </style>
 
   <script>
-      this.error = null;
+      this.error_authentication = null;
 
       authenticate = ()=> {
         var username = this.refs.inputUsername.value;
@@ -72,10 +72,10 @@
         try{
             token = gateway.authentication(username, password);
             console.log(token);
-            //this.error_connection = false;
             if (token) {
                 console.log('loginpage: successfully authenticated');
-                document.cookie = "token="+token;
+                setCookie("token", token);
+                opts.onlogin(token);
             }
             else {
                 console.log('loginpage: authentication failed');
@@ -83,10 +83,9 @@
             }
         }
         catch(e){
-            console.log('loginpage: connection error>');
+            console.log('loginpage: connection error');
             console.log(e);
-            this.error_authentication = false;
-            this.error_connection = true;
+            this.error_authentication = true;
         }
       };
 

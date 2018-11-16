@@ -8,7 +8,7 @@ import java.util.Locale;
 public class Launcher {
     public static void main(String[] args) throws Exception {
         Locale.setDefault(Locale.ENGLISH);
-        Server server = new Server(8888);
+        Server server = new Server(8889);
         WebAppContext context = new WebAppContext("src/main/webapp", "/");
 
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {

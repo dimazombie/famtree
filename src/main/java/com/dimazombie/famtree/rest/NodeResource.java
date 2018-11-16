@@ -15,7 +15,7 @@ import java.util.List;
 public class NodeResource {
     @GET
     @Path("111")
-    public List<Node> getNodes() {
+    public List<Node> getAllNodes() {
         return Arrays.asList(
                 new Node(1L,null, new Person("John",null,"Doe",new Date())),
                 new Node(2L,1L, new Person("Mark",null,"Doe",new Date())),
@@ -25,7 +25,8 @@ public class NodeResource {
 
     @GET
     @Path("222")
-    public List<Node> getNodesSecured() {
+    public List<Node> getAllNodesSecured() {
+        System.out.println("getAllNodesSecured");
         return Arrays.asList(
                 new Node(1L,null, new Person("Secured",null,"Doe",new Date()))
         );

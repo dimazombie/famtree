@@ -1,7 +1,7 @@
 <main-page>
-  <title-bar/>
+  <title-bar onlogout={opts.onlogout}/>
   <div class="tree">
-    <node children={this.children} if={this.children}>
+    <node children={this.children} if={this.children}/>
   </div>
   <div id="inner_remaining"></div>
   <style>

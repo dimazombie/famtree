@@ -5,8 +5,15 @@
           <span>Имя Фамилия</span>
       </span>
   </div>
+  <img src="./pic/exit.png" height="25px" width="25px" onclick={opts.onlogout}>
 
   <style>
+    img {
+         position: absolute; /* блок занимает ширину содержимого, max-width её ограничивает */
+          top: 2em; /* прикрепить к верху родителя */
+          right: 0;
+          margin-right: 2em;
+      }
     h2 {
       font-family: 'Playfair Display SC', serif;
       font-weight: 500;
