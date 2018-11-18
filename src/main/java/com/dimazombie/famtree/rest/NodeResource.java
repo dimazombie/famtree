@@ -22,11 +22,12 @@ public class NodeResource {
     @Path("111")
     public List<Node> getAllNodes() {
         logger.debug("getAllNodes");
-        return Arrays.asList(
-                new Node(1L,null, new Person("John",null,"Doe",new Date())),
-                new Node(2L,1L, new Person("Mark",null,"Doe",new Date())),
-                new Node(3L,1L, new Person("Susan",null,"Doe",new Date()))
-        );
+        Node ancestor1 = new Node(1L, new Person(11L,"John Doe",new Date()), null);
+        Node ancestor2 = new Node(2L, new Person(12L,"Mary Jane",new Date()), null);
+        Node member =  new Node(3L, new Person(13L,"Bill Billoff",new Date()),
+                Arrays.asList(ancestor1, ancestor2));
+
+        return Arrays.asList(member);
     }
 
     @GET
@@ -34,8 +35,12 @@ public class NodeResource {
     @Path("222")
     public List<Node> getAllNodesSecured() {
         logger.debug("getAllNodesSecured");
-        return Arrays.asList(
-                new Node(1L,null, new Person("Secured",null,"Doe",new Date()))
-        );
+
+        Node ancestor1 = new Node(1L, new Person(11L,"John Doe",new Date()), null);
+        Node ancestor2 = new Node(2L, new Person(12L,"Mary Jane",new Date()), null);
+        Node member =  new Node(3L, new Person(13L,"Bill Billoff",new Date()),
+                Arrays.asList(ancestor1, ancestor2));
+
+        return Arrays.asList(member);
     }
 }

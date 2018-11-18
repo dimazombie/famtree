@@ -11,7 +11,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -24,7 +23,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private static final String AUTHENTICATION_SCHEME = "Bearer";
     private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED).build();
-    private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN).build();
 
     @Override
     public void filter(ContainerRequestContext requestContext) {

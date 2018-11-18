@@ -40,7 +40,7 @@ var gateway = new function () {
                     xhr.setRequestHeader('Authorization', this.backend_secure_prefix + token);
             },
             success: function( data, textStatus, jQxhr ) {
-                nodes = data.data;
+                nodes = data;
                 console.log("getAllNodes(data):" + textStatus);
                 console.log(data);
             },

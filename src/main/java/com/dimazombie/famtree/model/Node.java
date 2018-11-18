@@ -1,19 +1,16 @@
 package com.dimazombie.famtree.model;
 
+import java.util.List;
+
 public class Node {
     Long id;
-    Long parentId;
-    Person person;
+    Person member;
+    List<Node> ancestors;
 
-    public Node(Long id, Long parentId, Person person) {
+    public Node(Long id, Person member, List<Node> ancestors) {
         this.id = id;
-        this.parentId = parentId;
-        this.person = person;
-    }
-
-    public Node(Long parentId, Person person) {
-        this.parentId = parentId;
-        this.person = person;
+        this.member = member;
+        this.ancestors = ancestors;
     }
 
     public Long getId() {
@@ -24,19 +21,19 @@ public class Node {
         this.id = id;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public Person getMember() {
+        return member;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setMember(Person member) {
+        this.member = member;
     }
 
-    public Person getPerson() {
-        return person;
+    public List<Node> getAncestors() {
+        return ancestors;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setAncestors(List<Node> ancestors) {
+        this.ancestors = ancestors;
     }
 }

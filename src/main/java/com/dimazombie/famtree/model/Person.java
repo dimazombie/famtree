@@ -4,15 +4,12 @@ import java.util.Date;
 
 public class Person {
     Long id;
-    String firstName;
-    String middleName;
-    String lastName;
+    String name;
     Date birthDate;
 
-    public Person(String firstName, String middleName, String lastName, Date birthDate) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+    public Person(Long id, String name, Date birthDate) {
+        this.id = id;
+        this.name = name;
         this.birthDate = birthDate;
     }
 
@@ -24,28 +21,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getBirthDate() {

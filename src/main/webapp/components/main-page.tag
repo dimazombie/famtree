@@ -1,7 +1,7 @@
 <main-page>
   <title-bar onlogout={opts.onlogout}/>
   <div class="tree">
-    <node children={this.children} if={this.children}/>
+    <node nodes={this.nodes} if={this.nodes}/>
   </div>
   <div id="inner_remaining"></div>
   <style>
@@ -115,41 +115,10 @@
 
   </style>
   <script>
-
-  this.children = gateway.getAllNodes();
-    /*this.children = [{
-                   name: 'My Tree',
-                   children: [
-                     { name: 'hello' },
-                     { name: 'wat' },
-                     {
-                       name: 'child folder',
-                       children: [
-                         {
-                           name: 'child folder',
-                           children: [
-                             { name: 'hello' },
-                             { name: 'wat' }
-                           ]
-                         },
-                         { name: 'hello' },
-                         { name: 'wat' },
-                         {
-                           name: 'child folder',
-                           children: [
-                             { name: 'hello' },
-                             { name: 'wat',
-                               children: [
-                                 { name: 'hello' },
-                                 { name: 'wat' }
-                               ]
-
-                             }
-                           ]
-                         }
-                       ]
-                     }
-                   ]
-                 }];*/
+    this.on('before-mount', function() {
+        this.nodes = gateway.getAllNodes();
+        console.log("mp update");
+        console.log(this.nodes);
+    });
   </script>
 </main-page>

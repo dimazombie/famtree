@@ -1,18 +1,18 @@
 <node>
   <ul>
-    <li each={node in opts.children} node={node}>
+    <li each={node in opts.nodes} node={node}>
         <div class="item">
             <div class="polaroid">
                 <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showCard(node)} >
                 <div class="caption" contenteditable="true">
-                    {node.name}
+                    {node.member.name}
                 </div>
             </div>
         </div>
-        <div class="arrow" if={!node.children}  >
-            <img src="./pic/arrow.gif" height="50px" width="80px" onclick={() => this.createChildren(node)} >
+        <div class="arrow" if={!node.ancestors}  >
+            <img src="./pic/arrow.gif" height="50px" width="80px" onclick={() => this.createAncestors(node)} >
         </div>
-        <node children={node.children} if={node.children}>
+        <node nodes={node.ancestors} if={node.ancestors}>
     </li>
   </ul>
 
@@ -52,17 +52,22 @@
   </style>
 
   <script>
-    createChildren(node) {
-      if(!node.children) {
-          var children = [{}, {}];
-          node.children = children;
+    this.on('after-mount', function() {
+        console.log("node");
+        console.log(this.node);
+    });
+
+    createAncestors(node) {
+      if(!node.ancestors) {
+          var ancestors = [{}, {}];
+          node.ancestors = ancestors;
           console.log(node);
           this.update();
       }
     }
 
     showCard(node) {
-      console.log("popup");
+      console.log("show card");
     }
   </script>
 </node>
