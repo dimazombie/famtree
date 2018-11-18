@@ -2,6 +2,7 @@ package com.dimazombie.famtree.rest;
 
 import com.dimazombie.famtree.model.Node;
 import com.dimazombie.famtree.model.Person;
+import com.dimazombie.famtree.web.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ public class NodeResource {
     }
 
     @GET
+    @Secured
     @Path("222")
     public List<Node> getAllNodesSecured() {
         logger.debug("getAllNodesSecured");

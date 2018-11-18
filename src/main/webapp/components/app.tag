@@ -8,6 +8,8 @@
 
     </style>
     <script>
+        var token = getCookie("token");
+        console.log(token);
         login(token) {
             console.log("app: try to login");
 
@@ -25,7 +27,7 @@
         logout() {
             console.log("app: clean token");
 
-            setCookie("token", null);
+            setCookie("token", "");
 
             this.nodes = null;
             this.update();

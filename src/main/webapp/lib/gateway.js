@@ -25,7 +25,7 @@ var gateway = new function () {
         return token;
     }
     
-    this.getAllNodes = (token)=> {
+    this.getAllNodes = ()=> {
         var nodes;
         $.ajax({
             url : this.backend_uri + "/node/222",
@@ -34,6 +34,8 @@ var gateway = new function () {
             cache: false,
             timeout: 1000,
             beforeSend: (xhr)=> {
+                var token = getCookie("token");
+                console.log(token);
                 if (typeof token !== 'undefined')
                     xhr.setRequestHeader('Authorization', this.backend_secure_prefix + token);
             },

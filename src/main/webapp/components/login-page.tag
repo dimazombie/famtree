@@ -1,7 +1,7 @@
 <login-page>
     <div class="form">
-        <input class="form-control" type="username" ref="inputUsername" placeholder="username" required autofocus onKeyPress={checkSubmit}>
-        <input class="form-control" type="password" ref="inputPassword" placeholder="password" required onKeyPress={checkSubmit}>
+        <input class="form-control" type="username" ref="inputUsername" value="test" placeholder="username" required autofocus onKeyPress={checkSubmit}>
+        <input class="form-control" type="password" ref="inputPassword" value="test" placeholder="password" required onKeyPress={checkSubmit}>
         <div class="btn-login" onclick={authenticate}>LOGIN</div>
         <div class="error-block" if={this.error_authentication}>Incorrect Username or Password...</div>
     </div>
