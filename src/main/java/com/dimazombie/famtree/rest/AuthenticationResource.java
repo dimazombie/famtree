@@ -1,18 +1,22 @@
 package com.dimazombie.famtree.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/authentication")
-public class AuthenticationEndpoint {
+public class AuthenticationResource {
+    private Logger logger = LoggerFactory.getLogger(AuthenticationResource.class);
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@FormParam("username") String username,
                                      @FormParam("password") String password) {
-
+        logger.debug("try to auth");
         try {
             authenticate(username, password);
 

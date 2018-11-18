@@ -116,7 +116,7 @@
   </style>
   <script>
 
-  this.children = [{ name: 'My Tree' }];
+  this.children = gateway.getAllNodes();
     /*this.children = [{
                    name: 'My Tree',
                    children: [

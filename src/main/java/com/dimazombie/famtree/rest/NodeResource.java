@@ -2,6 +2,8 @@ package com.dimazombie.famtree.rest;
 
 import com.dimazombie.famtree.model.Node;
 import com.dimazombie.famtree.model.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,9 +15,12 @@ import java.util.List;
 @Path("node")
 @Produces("application/json")
 public class NodeResource {
+    private Logger logger = LoggerFactory.getLogger(NodeResource.class);
+
     @GET
     @Path("111")
     public List<Node> getAllNodes() {
+        logger.debug("getAllNodes");
         return Arrays.asList(
                 new Node(1L,null, new Person("John",null,"Doe",new Date())),
                 new Node(2L,1L, new Person("Mark",null,"Doe",new Date())),
@@ -26,7 +31,7 @@ public class NodeResource {
     @GET
     @Path("222")
     public List<Node> getAllNodesSecured() {
-        System.out.println("getAllNodesSecured");
+        logger.debug("getAllNodesSecured");
         return Arrays.asList(
                 new Node(1L,null, new Person("Secured",null,"Doe",new Date()))
         );
