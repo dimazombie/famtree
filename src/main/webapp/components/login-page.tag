@@ -3,7 +3,7 @@
         <input class="form-control" type="username" ref="inputUsername" value="test" placeholder="username" required autofocus onKeyPress={checkSubmit}>
         <input class="form-control" type="password" ref="inputPassword" value="test" placeholder="password" required onKeyPress={checkSubmit}>
         <div class="btn-login" onclick={authenticate}>LOGIN</div>
-        <div class="error-block" if={this.error_authentication}>Incorrect Username or Password...</div>
+        <div class="error-block" if={this.errorAuthentication}>Incorrect Username or Password...</div>
     </div>
 
   <style>
@@ -58,7 +58,7 @@
   </style>
 
   <script>
-      this.error_authentication = null;
+      this.errorAuthentication = null;
 
       authenticate = ()=> {
         var username = this.refs.inputUsername.value;
@@ -79,13 +79,13 @@
             }
             else {
                 console.log('loginpage: authentication failed');
-                this.error_authentication = true;
+                this.errorAuthentication = true;
             }
         }
         catch(e){
             console.log('loginpage: connection error');
             console.log(e);
-            this.error_authentication = true;
+            this.errorAuthentication = true;
         }
       };
 

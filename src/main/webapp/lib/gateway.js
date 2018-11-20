@@ -1,13 +1,14 @@
 var gateway = new function () {
-    this.backend_uri = "http://localhost:8889/api";
-    this.backend_secure_prefix = "Bearer ";
+    this.backendUri = "http://localhost:8889/api";
+    this.backendSecurePrefix = "Bearer ";
+    this.nodesPath = "/nodes"
 
     this.authentication = (username, password)=> {
         var data = {username: username, password: password};
         var token;
         $.ajax({
             type: "POST",
-            url : this.backend_uri + "/authentication",
+            url : this.backendUri + "/authentication",
             async: false,
             data: data,
             dataType: 'text',
@@ -28,7 +29,7 @@ var gateway = new function () {
     this.getAllNodes = ()=> {
         var nodes;
         $.ajax({
-            url : this.backend_uri + "/node/222",
+            url : this.backendUri + this.nodesPath,
             type: "GET",
             async: false,
             cache: false,
@@ -37,12 +38,12 @@ var gateway = new function () {
                 var token = getCookie("token");
                 console.log(token);
                 if (typeof token !== 'undefined')
-                    xhr.setRequestHeader('Authorization', this.backend_secure_prefix + token);
+                    xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
-            success: function( data, textStatus, jQxhr ) {
-                nodes = data;
+            success: function( res, textStatus, jQxhr ) {
+                nodes = res;
                 console.log("getAllNodes(data):" + textStatus);
-                console.log(data);
+                console.log(res);
             },
             error: function(jqXhr, textStatus, errorThrown) {
                 console.log("getAllNodes(errorThrown):" + errorThrown);
@@ -50,5 +51,34 @@ var gateway = new function () {
         });
         return nodes;
     }
+
+    this.addAllNodes = (nodeId)=> {
+            var data = {nodeId: nodeId};
+            var node;
+            $.ajax({
+                type: "POST",
+                url : this.backendUri + this.nodesPath,
+                async: false,
+                data: data,
+                dataType: 'text',
+                cache: false,
+                timeout: 1000,
+                beforeSend: (xhr)=> {
+                    var token = getCookie("token");
+                    console.log(token);
+                    if (typeof token !== 'undefined')
+                        xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
+                },
+                success: function( res, textStatus, jQxhr ) {
+                    node = JSON.parse(res);
+                    console.log("addNewNodes(data):" + textStatus);
+                    console.log(node);
+                },
+                error: function(jqXhr, textStatus, errorThrown) {
+                    console.log("addNewNodes(errorThrown):" + errorThrown);
+                }
+            });
+            return node;
+        }
 
 }

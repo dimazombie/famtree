@@ -36,18 +36,18 @@
     }
 
     .item:hover {
-      box-shadow: 5px 1px 10px gray;
-      -webkit-transform: scale(1.1,1.1);
-      position: relative;
-      z-index: 2;
-      cursor: pointer;
+        box-shadow: 5px 1px 10px gray;
+        -webkit-transform: scale(1.1,1.1);
+        position: relative;
+        z-index: 2;
+        cursor: pointer;
     }
 
     .arrow:hover {
-      -webkit-transform: scale(1.1,1.1);
-      position: relative;
-      z-index: 2;
-      cursor: pointer;
+        -webkit-transform: scale(1.1,1.1);
+        position: relative;
+        z-index: 2;
+        cursor: pointer;
     }
   </style>
 
@@ -58,16 +58,14 @@
     });
 
     createAncestors(node) {
-      if(!node.ancestors) {
-          var ancestors = [{}, {}];
-          node.ancestors = ancestors;
-          console.log(node);
-          this.update();
-      }
+        var updatedNode = gateway.addAllNodes(node.id);
+        node.ancestors = updatedNode.ancestors;
+        this.update();
     }
 
+
     showCard(node) {
-      console.log("show card");
+        console.log("show card");
     }
   </script>
 </node>

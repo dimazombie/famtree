@@ -1,16 +1,19 @@
 package com.dimazombie.famtree.model;
 
-import java.util.Date;
-
 public class Person {
     Long id;
     String name;
-    Date birthDate;
+    String dateOfBirth;
 
-    public Person(Long id, String name, Date birthDate) {
+    public Person(Long id, String name, String dateOfBirth) {
         this.id = id;
         this.name = name;
-        this.birthDate = birthDate;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Person(String name, String dateOfBirth) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Long getId() {
@@ -29,11 +32,11 @@ public class Person {
         this.name = name;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

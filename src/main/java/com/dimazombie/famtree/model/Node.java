@@ -13,6 +13,11 @@ public class Node {
         this.ancestors = ancestors;
     }
 
+    public Node(Person person, List<Node> ancestors) {
+        this.member = member;
+        this.ancestors = ancestors;
+    }
+
     public Long getId() {
         return id;
     }
