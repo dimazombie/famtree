@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -34,3 +33,5 @@ $RECYCLE.BIN/
 .idea/
 webapp/node_modules
 package-lock.json
+*.lock.db
+*.trace.db

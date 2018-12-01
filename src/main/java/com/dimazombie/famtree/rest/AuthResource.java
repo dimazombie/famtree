@@ -7,8 +7,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/authentication")
-public class AuthenticationResource {
-    private Logger logger = LoggerFactory.getLogger(AuthenticationResource.class);
+public class AuthResource {
+    private Logger logger = LoggerFactory.getLogger(AuthResource.class);
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)

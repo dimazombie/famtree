@@ -1,21 +1,39 @@
 package com.dimazombie.famtree.model;
 
+import javax.persistence.Access;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.List;
 
-public class Node {
-    Long id;
-    Person member;
-    List<Node> ancestors;
+import static javax.persistence.AccessType.FIELD;
+import static javax.persistence.GenerationType.AUTO;
 
-    public Node(Long id, Person member, List<Node> ancestors) {
-        this.id = id;
-        this.member = member;
-        this.ancestors = ancestors;
+@Entity @Access(FIELD)
+public class Node implements Serializable {
+    @GeneratedValue(strategy = AUTO)
+    @Id public Long id;
+
+    public Long parentId;
+    public String name;
+    public String dateOfBirth;
+    public List<Node> ancestors;
+
+    public Node() {
     }
 
-    public Node(Person person, List<Node> ancestors) {
-        this.member = member;
-        this.ancestors = ancestors;
+    public Node(Long id, Long parentId, String name, String dateOfBirth) {
+        this.id = id;
+        this.parentId = parentId;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Node(Long parentId, String name, String dateOfBirth) {
+        this.parentId = parentId;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Long getId() {
@@ -26,12 +44,28 @@ public class Node {
         this.id = id;
     }
 
-    public Person getMember() {
-        return member;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setMember(Person member) {
-        this.member = member;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public List<Node> getAncestors() {

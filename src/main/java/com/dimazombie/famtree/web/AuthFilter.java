@@ -15,11 +15,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 @Provider
-public class AuthenticationFilter implements ContainerRequestFilter {
-    private Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+public class AuthFilter implements ContainerRequestFilter {
+    private Logger logger = LoggerFactory.getLogger(AuthFilter.class);
 
-    @Context
-    private ResourceInfo resourceInfo;
+    @Context private ResourceInfo resourceInfo;
 
     private static final String AUTHENTICATION_SCHEME = "Bearer";
     private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED).build();

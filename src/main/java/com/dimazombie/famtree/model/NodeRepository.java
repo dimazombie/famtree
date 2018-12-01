@@ -1,20 +1,9 @@
 package com.dimazombie.famtree.model;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-public class NodeRepository {
-    public List<Node> getAllNodes() {
-        Node ancestor1 = new Node(1L, new Person(11L,"John Doe 2", new Date().toString()), null);
-        Node ancestor2 = new Node(2L, new Person(12L,"Mary Jane 2", new Date().toString()), null);
-        Node member =  new Node(3L, new Person(13L,"Bill Billoff 2", new Date().toString()),
-                Arrays.asList(ancestor1, ancestor2));
-
-        return Arrays.asList(member);
-    }
-
-    public Node persist(Node node) {
-        return node;
-    };
+public interface NodeRepository {
+    public List<Node> getAllNodes();
+    public Node getNodeById(String nodeId);
+    public Node addNewNodes(Node node);
 }

@@ -5,7 +5,7 @@
             <div class="polaroid">
                 <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showCard(node)} >
                 <div class="caption" contenteditable="true">
-                    {node.member.name}
+                    {node.name}
                 </div>
             </div>
         </div>
