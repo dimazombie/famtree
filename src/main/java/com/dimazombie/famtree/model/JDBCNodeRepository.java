@@ -125,6 +125,24 @@ public class JDBCNodeRepository implements NodeRepository {
         }
     }
 
+    public void removeNode(Node node) {
+        Connection conn = null;
+        try {
+            InitialContext ctx = new InitialContext();
+            DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
+            conn = ds.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("delete from Node where id = ?");
+            stmt.setLong(1, node.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeSilently(conn);
+        }
+    }
+
     private void closeSilently(Connection conn) {
         try {
             if (conn != null) conn.close();

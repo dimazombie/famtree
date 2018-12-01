@@ -36,4 +36,12 @@ public class NodeResource {
         return node;
     }
 
+    @DELETE
+    @Secured
+    public Node removeNode(@FormParam("nodeId") String nodeId) {
+        Node node = repo.getNodeById(nodeId);
+        repo.removeNode(node);
+        return node;
+    }
+
 }

@@ -1,22 +1,26 @@
 <node>
-  <ul>
-    <li each={node in opts.nodes} node={node}>
-        <div class="item">
-            <div class="polaroid">
-                <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showCard(node)} >
-                <div class="caption" contenteditable="true">
-                    {node.name}
+  <div id="node">
+      <ul>
+        <li each={node in opts.nodes} node={node}>
+            <div class="item">
+                <div class="polaroid">
+                    <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showCard(node)} >
+                    <div class="caption" contenteditable="true">
+                        {node.name}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="arrow" if={!node.ancestors}  >
-            <img src="./pic/arrow.gif" height="50px" width="80px" onclick={() => this.createAncestors(node)} >
-        </div>
-        <node nodes={node.ancestors} if={node.ancestors}>
-    </li>
-  </ul>
+
+            <div class="arrow" if={!node.ancestors}  >
+                <img src="./pic/arrow.gif" height="50px" width="80px" onclick={() => this.createAncestors(node)} >
+            </div>
+            <node nodes={node.ancestors} if={node.ancestors} onshowcard={opts.onshowcard}>
+        </li>
+      </ul>
+  </div>
 
   <style>
+
     .polaroid {
         background: #fff;
         padding: 1rem;
@@ -65,7 +69,8 @@
 
 
     showCard(node) {
-        console.log("show card");
+        console.log("node show card")
+        this.parent.opts.onshowcard(node)
     }
   </script>
 </node>
