@@ -1,7 +1,10 @@
 <main-page>
   <title-bar onlogout={opts.onlogout}/>
   <div class="tree">
-    <node nodes={this.nodes} if={this.nodes} onshowcard={showcard}/>
+    <node nodes={this.nodes} if={this.nodes.length > 0} onshowcard={showcard}/>
+    <div if={this.nodes.length === 0}>
+      <button type="button" class="btn btn-secondary" onclick={createNode}>Создать</button>
+    </div>
   </div>
   <div id="inner_remaining"></div>
   <div class="md-modal md-effect-1 {md-show: dialogShowing}">

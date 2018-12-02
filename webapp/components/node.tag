@@ -11,10 +11,10 @@
                 </div>
             </div>
 
-            <div class="arrow" if={!node.ancestors}  >
+            <div class="arrow" if={!node.ancestors} >
                 <img src="./pic/arrow.gif" height="50px" width="80px" onclick={() => this.createAncestors(node)} >
             </div>
-            <node nodes={node.ancestors} if={node.ancestors} onshowcard={opts.onshowcard}>
+            <node nodes={node.ancestors} if={node.ancestors.length > 0} onshowcard={opts.onshowcard}>
         </li>
       </ul>
   </div>
@@ -70,7 +70,7 @@
 
     showCard(node) {
         console.log("node show card")
-        this.parent.opts.onshowcard(node)
+        opts.onshowcard(node)
     }
   </script>
 </node>
