@@ -3,6 +3,7 @@ package com.dimazombie.famtree.rest;
 import com.dimazombie.famtree.model.Node;
 import com.dimazombie.famtree.model.NodeRepository;
 import com.dimazombie.famtree.web.Secured;
+import org.apache.cxf.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,14 +27,29 @@ public class NodeResource {
 
     @POST
     @Secured
-    public Node addParentNodes(@FormParam("nodeId") String nodeId) {
-        Node node = repo.getNodeById(nodeId);
-        Node momsNode = new Node(node.getId(), "Mom", null);
-        Node dadsNode = new Node(node.getId(), "Dad", null);
-        node.ancestors = new ArrayList<Node>();
-        node.ancestors.add(repo.addNewNodes(momsNode));
-        node.ancestors.add(repo.addNewNodes(dadsNode));
-        return node;
+    public Node addNewNode(@FormParam("nodeId") String parendNodeId) {
+        Node newNode = null;
+        if(StringUtils.isEmpty(parendNodeId)) {
+            newNode = new Node(null, "Mee", null);
+            repo.addNewNodes(newNode);
+        } else {
+            Node parent = repo.getNodeById(parendNodeId);
+            if(parent.ancestors == null) {
+                parent.ancestors = new ArrayList<Node>();
+            }
+            newNode = new Node(parent.getId(), "Parent", null);
+            repo.addNewNodes(newNode);
+            parent.ancestors.add(newNode);
+        }
+        return newNode;
+    }
+
+    @HEAD
+    @Secured
+    public Node addRootNode() {
+        Node root = new Node(null, "Mee", null);
+        repo.addNewNodes(root);
+        return root;
     }
 
     @DELETE

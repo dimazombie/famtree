@@ -6,10 +6,7 @@ import org.slf4j.LoggerFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +107,11 @@ public class JDBCNodeRepository implements NodeRepository {
             conn = ds.getConnection();
             PreparedStatement stmt = conn.prepareStatement("insert into Node(parentId, name, dateOfBirth) " +
                     "values (?, ?, ?)");
-            stmt.setLong(1, node.getParentId());
+            if(node.getParentId() != null) {
+                stmt.setLong(1, node.getParentId());
+            } else {
+                stmt.setNull(1, Types.BIGINT);
+            }
             stmt.setString(2, node.getName());
             stmt.setString(3, node.getDateOfBirth());
             stmt.execute();

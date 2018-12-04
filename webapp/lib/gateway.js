@@ -52,7 +52,7 @@ var gateway = new function () {
         return nodes;
     }
 
-    this.addAllNodes = (nodeId)=> {
+    this.addParentNode = (nodeId)=> {
         var data = {nodeId: nodeId};
         var node;
         $.ajax({

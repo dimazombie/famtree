@@ -1,15 +1,15 @@
 <main-page>
   <title-bar onlogout={opts.onlogout}/>
   <div class="tree">
-    <node nodes={this.nodes} if={this.nodes.length > 0} onshowcard={showcard}/>
+    <node nodes={this.nodes} if={this.nodes.length > 0} showcard={showcard} updatenodes={updatenodes}/>
     <div if={this.nodes.length === 0}>
-      <button type="button" class="btn btn-secondary" onclick={createNode}>Создать</button>
+      <button type="button" class="btn btn-secondary" onclick={createRoot}>Создать</button>
     </div>
   </div>
   <div id="inner_remaining"></div>
   <div class="md-modal md-effect-1 {md-show: dialogShowing}">
       <div class="md-content">
-          <h3>{node.name}</h3>
+          <h3>{node && node.name}</h3>
           <div>
               <p>
                 some info
@@ -266,34 +266,39 @@
   </style>
   <script>
     var self = this
-    var node
 
     this.on('before-mount', function() {
-        self.nodes = gateway.getAllNodes();
-        console.log("mp update");
-        console.log(this.nodes);
+        self.updatenodes()
     });
 
+    this.updatenodes = () => {
+        self.nodes = gateway.getAllNodes()
+        self.update()
+    }
+
     this.showcard = (node) => {
-        console.log('showcard')
-        console.log(node)
         self.dialogShowing = true;
         self.node = node
         self.update()
     }
+
     this.removeNode = () => {
-        console.log('removenode')
-        gateway.removeNode(self.node.id);
+        gateway.removeNode(self.node.id)
         self.dialogShowing = false
-        self.nodes = gateway.getAllNodes();
-        self.update()
+        self.updatenodes()
     }
+
     this.submitNode = () => {
-        console.log('submitNode')
         self.dialogShowing = false
     }
+
     this.closeNode = () => {
         self.dialogShowing = false
+    }
+
+    this.createRoot = () => {
+        gateway.addParentNode(null)
+        self.updatenodes()
     }
   </script>
 </main-page>
