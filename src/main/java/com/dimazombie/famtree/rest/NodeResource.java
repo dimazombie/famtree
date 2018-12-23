@@ -28,16 +28,15 @@ public class NodeResource {
     @POST
     @Secured
     public Node addNewNode(@FormParam("nodeId") String parendNodeId) {
-        Node newNode = null;
+        Node newNode = new Node();
         if(StringUtils.isEmpty(parendNodeId)) {
-            newNode = new Node(null, "Mee", null);
             repo.addNewNodes(newNode);
         } else {
             Node parent = repo.getNodeById(parendNodeId);
             if(parent.ancestors == null) {
                 parent.ancestors = new ArrayList<Node>();
             }
-            newNode = new Node(parent.getId(), "Parent", null);
+            newNode.setParentId(parent.getId());
             repo.addNewNodes(newNode);
             parent.ancestors.add(newNode);
         }
@@ -47,7 +46,7 @@ public class NodeResource {
     @HEAD
     @Secured
     public Node addRootNode() {
-        Node root = new Node(null, "Mee", null);
+        Node root = new Node();
         repo.addNewNodes(root);
         return root;
     }

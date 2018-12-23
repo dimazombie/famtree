@@ -21,13 +21,14 @@ public class JDBCNodeRepository implements NodeRepository {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.dateOfBirth from Node n " +
+            ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n " +
                     "where n.parentId is null").executeQuery();
             while (rs.next()) {
                 Long nodeId = rs.getLong("id");
 
                 Node node = new Node(nodeId, rs.getLong("parentId"),
                         rs.getString("name"),
+                        rs.getString("bio"),
                         rs.getString("dateOfBirth")
                 );
 
@@ -57,12 +58,13 @@ public class JDBCNodeRepository implements NodeRepository {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.dateOfBirth from Node n " +
+            ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n " +
                     "where n.id = "+ nodeId).executeQuery();
             while (rs.next()) {
                 node = new Node(rs.getLong("id"),
                         rs.getLong("parentId"),
                         rs.getString("name"),
+                        rs.getString("bio"),
                         rs.getString("dateOfBirth")
                 );
             }
@@ -78,7 +80,7 @@ public class JDBCNodeRepository implements NodeRepository {
 
     private List<Node> getAncestors(Long parentId, Connection conn) throws SQLException {
         List<Node> nodes = new ArrayList<Node>();
-        ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.dateOfBirth from Node n " +
+        ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n " +
                 "where n.parentId = "+ parentId).executeQuery();
         while (rs.next()) {
             Long nodeId = rs.getLong("id");
@@ -86,6 +88,7 @@ public class JDBCNodeRepository implements NodeRepository {
             Node node = new Node(rs.getLong("id"),
                     rs.getLong("parentId"),
                     rs.getString("name"),
+                    rs.getString("bio"),
                     rs.getString("dateOfBirth")
             );
 
@@ -105,15 +108,16 @@ public class JDBCNodeRepository implements NodeRepository {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("insert into Node(parentId, name, dateOfBirth) " +
-                    "values (?, ?, ?)");
+            PreparedStatement stmt = conn.prepareStatement("insert into Node(parentId, name, bio, dateOfBirth) " +
+                    "values (?, ?, ?, ?)");
             if(node.getParentId() != null) {
                 stmt.setLong(1, node.getParentId());
             } else {
                 stmt.setNull(1, Types.BIGINT);
             }
             stmt.setString(2, node.getName());
-            stmt.setString(3, node.getDateOfBirth());
+            stmt.setString(3, node.getBio());
+            stmt.setString(4, node.getDateOfBirth());
             stmt.execute();
             return node;
         }

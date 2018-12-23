@@ -11,10 +11,12 @@
       <div class="md-content">
           <h3>{node && node.name}</h3>
           <div>
+              <!--<img src="./content/img1.jpg"/>-->
               <p>
-                some info
+                {node.bio}
               </p>
-
+          </div>
+          <div>
               <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-secondary" onclick={removeNode}>Удалить</button>
                 <button type="button" class="btn btn-secondary" onclick={submitNode}>Сохранить</button>
@@ -221,6 +223,12 @@
         display: block;
         margin: 0 auto;
         font-size: 0.8em;
+      }
+
+      .md-content img {
+        margin-right: 15px;
+        float: left;
+        width: 250px;
       }
 
       /* Individual modal styles with animations/transitions */

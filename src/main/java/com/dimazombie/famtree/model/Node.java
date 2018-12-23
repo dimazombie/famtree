@@ -17,22 +17,18 @@ public class Node implements Serializable {
 
     public Long parentId;
     public String name;
+    public String bio;
     public String dateOfBirth;
     public List<Node> ancestors;
 
     public Node() {
     }
 
-    public Node(Long id, Long parentId, String name, String dateOfBirth) {
+    public Node(Long id, Long parentId, String name, String bio, String dateOfBirth) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Node(Long parentId, String name, String dateOfBirth) {
-        this.parentId = parentId;
-        this.name = name;
+        this.bio = bio;
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -58,6 +54,14 @@ public class Node implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getDateOfBirth() {
