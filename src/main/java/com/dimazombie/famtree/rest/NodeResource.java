@@ -27,35 +27,21 @@ public class NodeResource {
 
     @POST
     @Secured
-    public Node addNewNode(@FormParam("nodeId") String parendNodeId) {
+    public Node addNewNode(@FormParam("parentId") String parentId) {
         Node newNode = new Node();
-        if(StringUtils.isEmpty(parendNodeId)) {
-            repo.addNewNodes(newNode);
-        } else {
-            Node parent = repo.getNodeById(parendNodeId);
-            if(parent.ancestors == null) {
-                parent.ancestors = new ArrayList<Node>();
-            }
+        if(!StringUtils.isEmpty(parentId)) {
+            Node parent = repo.getById(parentId);
             newNode.setParentId(parent.getId());
-            repo.addNewNodes(newNode);
-            parent.ancestors.add(newNode);
         }
+        newNode = repo.persist(newNode);
         return newNode;
-    }
-
-    @HEAD
-    @Secured
-    public Node addRootNode() {
-        Node root = new Node();
-        repo.addNewNodes(root);
-        return root;
     }
 
     @DELETE
     @Secured
     public Node removeNode(@FormParam("nodeId") String nodeId) {
-        Node node = repo.getNodeById(nodeId);
-        repo.removeNode(node);
+        Node node = repo.getById(nodeId);
+        repo.remove(node);
         return node;
     }
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface NodeRepository {
     public List<Node> getAllNodes();
-    public Node getNodeById(String nodeId);
-    public Node addNewNodes(Node node);
-    public void removeNode(Node node);
+    public Node getById(String nodeId);
+    public Node persist(Node node);
+    public void remove(Node node);
 }

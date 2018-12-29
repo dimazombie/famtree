@@ -15,7 +15,8 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@FormParam("username") String username,
                                      @FormParam("password") String password) {
-        logger.debug("try to auth");
+
+        logger.debug("try to auth with: " + username + "/" + password);
         try {
             authenticate(username, password);
 

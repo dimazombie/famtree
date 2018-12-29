@@ -1,19 +1,16 @@
 <node>
   <div id="node">
       <ul>
-        <li each={node in opts.nodes} node={node}>
+        <li each={node, i in opts.nodes} node={node}>
             <div class="item">
                 <div class="polaroid">
-                    <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showcard(node)} >
+                    <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showcard(node, i)} >
                     <div class="caption" contenteditable="true">
                         {node.name}
                     </div>
                 </div>
             </div>
 
-            <div class="arrow" if={!node.ancestors} >
-                <img src="./pic/arrow.gif" height="50px" width="80px" onclick={() => this.createAncestors(node)} >
-            </div>
             <node nodes={node.ancestors} if={node.ancestors && node.ancestors.length > 0} showcard={showcard} updatenodes={opts.updatenodes}>
         </li>
       </ul>
@@ -59,14 +56,8 @@
     this.on('after-mount', function() {
     })
 
-    createAncestors(node) {
-        gateway.addParentNode(node.id)
-        gateway.addParentNode(node.id)
-        opts.updatenodes()
-    }
-
-    showcard(node) {
-        opts.showcard(node)
+    showcard(node, nodeNumber) {
+        opts.showcard(node, nodeNumber)
     }
   </script>
 </node>

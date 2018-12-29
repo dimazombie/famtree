@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.Id;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,12 +22,19 @@ public class JDBCNodeRepository implements NodeRepository {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n " +
-                    "where n.parentId is null").executeQuery();
-            while (rs.next()) {
+
+            String sql = "select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n where n.parentId is null";
+            logger.debug("SQL: " + sql);
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
                 Long nodeId = rs.getLong("id");
 
-                Node node = new Node(nodeId, rs.getLong("parentId"),
+                Node node = new Node(
+                        nodeId,
+                        rs.getLong("parentId"),
                         rs.getString("name"),
                         rs.getString("bio"),
                         rs.getString("dateOfBirth")
@@ -39,6 +47,7 @@ public class JDBCNodeRepository implements NodeRepository {
 
                 nodes.add(node);
             }
+            logger.debug("rs: " + nodes);
             return nodes;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -50,7 +59,7 @@ public class JDBCNodeRepository implements NodeRepository {
     }
 
     @Override
-    public Node getNodeById(String nodeId) {
+    public Node getById(String nodeId) {
         Connection conn = null;
         try {
             Node node = null;
@@ -58,16 +67,25 @@ public class JDBCNodeRepository implements NodeRepository {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n " +
-                    "where n.id = "+ nodeId).executeQuery();
-            while (rs.next()) {
-                node = new Node(rs.getLong("id"),
+
+            String sql = "select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n where n.id = ?";
+            logger.debug("SQL: " + sql);
+            logger.debug("with bind var: " + nodeId);
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, nodeId);
+
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                node = new Node(
+                        rs.getLong("id"),
                         rs.getLong("parentId"),
                         rs.getString("name"),
                         rs.getString("bio"),
                         rs.getString("dateOfBirth")
                 );
             }
+            logger.debug("rs: " + node);
             return node;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,12 +98,20 @@ public class JDBCNodeRepository implements NodeRepository {
 
     private List<Node> getAncestors(Long parentId, Connection conn) throws SQLException {
         List<Node> nodes = new ArrayList<Node>();
-        ResultSet rs = conn.prepareStatement("select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n " +
-                "where n.parentId = "+ parentId).executeQuery();
+
+        String sql = "select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n where n.parentId = ?";
+        logger.debug("SQL: " + sql);
+        logger.debug("with bind var: " + parentId);
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setLong(1, parentId);
+
+        ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Long nodeId = rs.getLong("id");
 
-            Node node = new Node(rs.getLong("id"),
+            Node node = new Node(
+                    rs.getLong("id"),
                     rs.getLong("parentId"),
                     rs.getString("name"),
                     rs.getString("bio"),
@@ -99,17 +125,25 @@ public class JDBCNodeRepository implements NodeRepository {
 
             nodes.add(node);
         }
+        logger.debug("rs: " + nodes);
         return nodes;
     }
 
-    public Node addNewNodes(Node node) {
+    public Node persist(Node node) {
         Connection conn = null;
         try {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("insert into Node(parentId, name, bio, dateOfBirth) " +
-                    "values (?, ?, ?, ?)");
+
+            String sql = "insert into Node(parentId, name, bio, dateOfBirth) values (?, ?, ?, ?)";
+            logger.debug("SQL: " + sql);
+            logger.debug("with bind var: " + node.getParentId());
+            logger.debug("with bind var: " + node.getName());
+            logger.debug("with bind var: " + node.getBio());
+            logger.debug("with bind var: " + node.getDateOfBirth());
+
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             if(node.getParentId() != null) {
                 stmt.setLong(1, node.getParentId());
             } else {
@@ -119,6 +153,13 @@ public class JDBCNodeRepository implements NodeRepository {
             stmt.setString(3, node.getBio());
             stmt.setString(4, node.getDateOfBirth());
             stmt.execute();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()) {
+                Long id = rs.getLong(1);
+                node.setId(id);
+            }
+            logger.debug("rs: " + node);
             return node;
         }
         catch (SQLException e) {
@@ -130,13 +171,18 @@ public class JDBCNodeRepository implements NodeRepository {
         }
     }
 
-    public void removeNode(Node node) {
+    public void remove(Node node) {
         Connection conn = null;
         try {
             InitialContext ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("delete from Node where id = ?");
+
+            String sql = "delete from Node where id = ?";
+            logger.debug("SQL: " + sql);
+            logger.debug("with bind var: " + node.getId());
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setLong(1, node.getId());
             stmt.execute();
         } catch (SQLException e) {

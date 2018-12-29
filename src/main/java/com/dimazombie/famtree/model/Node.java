@@ -1,20 +1,11 @@
 package com.dimazombie.famtree.model;
 
-import javax.persistence.Access;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.io.Serializable;
+import com.google.gson.Gson;
+
 import java.util.List;
 
-import static javax.persistence.AccessType.FIELD;
-import static javax.persistence.GenerationType.AUTO;
-
-@Entity @Access(FIELD)
-public class Node implements Serializable {
-    @GeneratedValue(strategy = AUTO)
-    @Id public Long id;
-
+public class Node {
+    public Long id;
     public Long parentId;
     public String name;
     public String bio;
@@ -78,5 +69,10 @@ public class Node implements Serializable {
 
     public void setAncestors(List<Node> ancestors) {
         this.ancestors = ancestors;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }
