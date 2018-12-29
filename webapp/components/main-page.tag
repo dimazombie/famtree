@@ -11,7 +11,7 @@
       <div class="md-content">
           <h3>{node && node.name}</h3>
           <div>
-              <img src={node && node.img && (gateway.getFilePathById(node.img))}/>
+              <img src={node && node.imageId && (gateway.getFilePathById(node.imageId))}/>
               <p>
                 {node && node.bio}
               </p>
@@ -302,23 +302,20 @@
         self.update()
     }
 
-    this.showcard = (node, nodeNumber) => {
-        console.log('showcard')
-        console.log(node)
-        console.log(nodeNumber)
-        self.dialogShowing = true;
+    this.showcard = (node) => {
         self.node = node
-        self.nodeNumber = nodeNumber
+        self.dialogShowing = true
         self.update()
     }
 
    this.removeNode = () => {
-        gateway.removeNode(self.node.id)
+        gateway.removeNode(self.node)
         self.dialogShowing = false
         self.updatenodes()
     }
 
     this.submitNode = () => {
+        gateway.submitNode(self.node)
         self.dialogShowing = false
     }
 
@@ -348,8 +345,8 @@
     this.handleFile = (e) => {
         console.log(e.target.files);
         if(e.target.files.length > 0) {
-            var imgsrc = gateway.sendFile(e.target.files);
-            self.node.img = imgsrc;
+            var imageId = gateway.sendFile(e.target.files);
+            self.node.imageId = imageId;
         }
     }
   </script>

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.Id;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,24 +22,29 @@ public class JDBCNodeRepository implements NodeRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n where n.parentId is null";
+            String sql = "select n.id, n.parentId, n.name, n.bio, n.imageId, n.dateOfBirth from Node n where n.parentId is null";
             logger.debug("SQL: " + sql);
 
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                Long nodeId = rs.getLong("id");
+                Long id = rs.getLong("id");
+                Long parentId = rs.getLong("parentId");
+                if (rs.wasNull()) parentId = null;
+                Long imageId = rs.getLong("imageId");
+                if (rs.wasNull()) imageId = null;
 
                 Node node = new Node(
-                        nodeId,
-                        rs.getLong("parentId"),
+                        id,
+                        parentId,
                         rs.getString("name"),
                         rs.getString("bio"),
+                        imageId,
                         rs.getString("dateOfBirth")
                 );
 
-                List<Node> ancestors = getAncestors(nodeId, conn);
+                List<Node> ancestors = getAncestors(id, conn);
                 if(ancestors.size() > 0) {
                     node.ancestors = ancestors;
                 }
@@ -68,7 +72,7 @@ public class JDBCNodeRepository implements NodeRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n where n.id = ?";
+            String sql = "select n.id, n.parentId, n.name, n.bio, n.imageId, n.dateOfBirth from Node n where n.id = ?";
             logger.debug("SQL: " + sql);
             logger.debug("with bind var: " + nodeId);
 
@@ -77,11 +81,17 @@ public class JDBCNodeRepository implements NodeRepository {
 
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
+                Long parentId = rs.getLong("parentId");
+                if (rs.wasNull()) parentId = null;
+                Long imageId = rs.getLong("imageId");
+                if (rs.wasNull()) imageId = null;
+
                 node = new Node(
                         rs.getLong("id"),
-                        rs.getLong("parentId"),
+                        parentId,
                         rs.getString("name"),
                         rs.getString("bio"),
+                        imageId,
                         rs.getString("dateOfBirth")
                 );
             }
@@ -96,29 +106,34 @@ public class JDBCNodeRepository implements NodeRepository {
         }
     }
 
-    private List<Node> getAncestors(Long parentId, Connection conn) throws SQLException {
+    private List<Node> getAncestors(Long nodeId, Connection conn) throws SQLException {
         List<Node> nodes = new ArrayList<Node>();
 
-        String sql = "select n.id, n.parentId, n.name, n.bio, n.dateOfBirth from Node n where n.parentId = ?";
+        String sql = "select n.id, n.parentId, n.name, n.bio, n.imageId, n.dateOfBirth from Node n where n.parentId = ?";
         logger.debug("SQL: " + sql);
-        logger.debug("with bind var: " + parentId);
+        logger.debug("with bind var: " + nodeId);
 
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setLong(1, parentId);
+        stmt.setLong(1, nodeId);
 
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            Long nodeId = rs.getLong("id");
+            Long id = rs.getLong("id");
+            Long parentId = rs.getLong("parentId");
+            if (rs.wasNull()) parentId = null;
+            Long imageId = rs.getLong("imageId");
+            if (rs.wasNull()) imageId = null;
 
             Node node = new Node(
-                    rs.getLong("id"),
-                    rs.getLong("parentId"),
+                    id,
+                    parentId,
                     rs.getString("name"),
                     rs.getString("bio"),
+                    imageId,
                     rs.getString("dateOfBirth")
             );
 
-            List<Node> ancestors = getAncestors(nodeId, conn);
+            List<Node> ancestors = getAncestors(id, conn);
             if(ancestors.size() > 0) {
                 node.ancestors = ancestors;
             }
@@ -136,30 +151,65 @@ public class JDBCNodeRepository implements NodeRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "insert into Node(parentId, name, bio, dateOfBirth) values (?, ?, ?, ?)";
-            logger.debug("SQL: " + sql);
-            logger.debug("with bind var: " + node.getParentId());
-            logger.debug("with bind var: " + node.getName());
-            logger.debug("with bind var: " + node.getBio());
-            logger.debug("with bind var: " + node.getDateOfBirth());
+            if(node.getId() == null) {
+                String sql = "insert into Node(parentId, name, bio, imageId, dateOfBirth) values (?, ?, ?, ?, ?)";
+                logger.debug("SQL: " + sql);
+                logger.debug("with bind var: " + node.getParentId());
+                logger.debug("with bind var: " + node.getName());
+                logger.debug("with bind var: " + node.getBio());
+                logger.debug("with bind var: " + node.getImageId());
+                logger.debug("with bind var: " + node.getDateOfBirth());
 
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            if(node.getParentId() != null) {
-                stmt.setLong(1, node.getParentId());
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                if (node.getParentId() != null) {
+                    stmt.setLong(1, node.getParentId());
+                } else {
+                    stmt.setNull(1, Types.BIGINT);
+                }
+                stmt.setString(2, node.getName());
+                stmt.setString(3, node.getBio());
+                if (node.getImageId() != null) {
+                    stmt.setLong(4, node.getImageId());
+                } else {
+                    stmt.setNull(4, Types.BIGINT);
+                }
+                stmt.setString(5, node.getDateOfBirth());
+                stmt.execute();
+
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    Long id = rs.getLong(1);
+                    node.setId(id);
+                }
+                logger.debug("rs: " + node);
             } else {
-                stmt.setNull(1, Types.BIGINT);
-            }
-            stmt.setString(2, node.getName());
-            stmt.setString(3, node.getBio());
-            stmt.setString(4, node.getDateOfBirth());
-            stmt.execute();
+                String sql = "update Node set parentId = ?, name = ?, bio = ?, imageId = ?, dateOfBirth = ? where id = ?";
+                logger.debug("SQL: " + sql);
+                logger.debug("with bind var: " + node.getParentId());
+                logger.debug("with bind var: " + node.getName());
+                logger.debug("with bind var: " + node.getBio());
+                logger.debug("with bind var: " + node.getImageId());
+                logger.debug("with bind var: " + node.getDateOfBirth());
+                logger.debug("with bind var: " + node.getId());
 
-            ResultSet rs = stmt.getGeneratedKeys();
-            if(rs.next()) {
-                Long id = rs.getLong(1);
-                node.setId(id);
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                if (node.getParentId() != null) {
+                    stmt.setLong(1, node.getParentId());
+                } else {
+                    stmt.setNull(1, Types.BIGINT);
+                }
+                stmt.setString(2, node.getName());
+                stmt.setString(3, node.getBio());
+                if (node.getImageId() != null) {
+                    stmt.setLong(4, node.getImageId());
+                } else {
+                    stmt.setNull(4, Types.BIGINT);
+                }
+                stmt.setString(5, node.getDateOfBirth());
+                stmt.setLong(6, node.getId());
+                stmt.execute();
             }
-            logger.debug("rs: " + node);
+
             return node;
         }
         catch (SQLException e) {

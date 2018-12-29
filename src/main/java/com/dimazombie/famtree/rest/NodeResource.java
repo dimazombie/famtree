@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("nodes")
@@ -42,6 +41,25 @@ public class NodeResource {
     public Node removeNode(@FormParam("nodeId") String nodeId) {
         Node node = repo.getById(nodeId);
         repo.remove(node);
+        return node;
+    }
+
+    @PUT
+    @Secured
+    public Node saveNode(@FormParam("id") String nodeId, @FormParam("parentId") String parentId,
+                         @FormParam("name") String name, @FormParam("bio") String bio,
+                         @FormParam("imageId") String imageId, @FormParam("dateOfBirth") String dateOfBirth) {
+        Node node = repo.getById(nodeId);
+        if(!StringUtils.isEmpty(parentId)) {
+            node.setParentId(Long.valueOf(parentId));
+        }
+        node.setName(name);
+        node.setBio(bio);
+        if(!StringUtils.isEmpty(imageId)) {
+            node.setImageId(Long.valueOf(imageId));
+        }
+        node.setDateOfBirth(dateOfBirth);
+        repo.persist(node);
         return node;
     }
 

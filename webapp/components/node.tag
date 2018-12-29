@@ -1,10 +1,10 @@
 <node>
   <div id="node">
       <ul>
-        <li each={node, i in opts.nodes} node={node}>
+        <li each={node in opts.nodes} node={node}>
             <div class="item">
                 <div class="polaroid">
-                    <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showcard(node, i)} >
+                    <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showcard(node)} >
                     <div class="caption" contenteditable="true">
                         {node.name}
                     </div>
@@ -56,8 +56,8 @@
     this.on('after-mount', function() {
     })
 
-    showcard(node, nodeNumber) {
-        opts.showcard(node, nodeNumber)
+    showcard(node) {
+        opts.showcard(node)
     }
   </script>
 </node>

@@ -83,9 +83,36 @@ var gateway = new function () {
         return node;
     }
 
-    this.removeNode = (nodeId)=> {
-        var data = {nodeId: nodeId};
-        var node;
+    this.submitNode = (node)=> {
+        var data = node;
+        console.log(data)
+        $.ajax({
+            type: "PUT",
+            url : this.backendUri + this.nodesPath,
+            async: false,
+            data: data,
+            dataType: 'text',
+            cache: false,
+            timeout: 1000,
+            beforeSend: (xhr)=> {
+                var token = getCookie("token");
+                console.log(token);
+                if (typeof token !== 'undefined')
+                    xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
+            },
+            success: function( res, textStatus, jQxhr ) {
+                console.log("saveNode(data):" + textStatus);
+                console.log(node);
+            },
+            error: function(jqXhr, textStatus, errorThrown) {
+                console.log("saveNode(errorThrown):" + errorThrown);
+            }
+        });
+        return node;
+    }
+
+    this.removeNode = (node)=> {
+        var data = {nodeId: node.id};
         $.ajax({
             type: "DELETE",
             url : this.backendUri + this.nodesPath,
@@ -101,12 +128,11 @@ var gateway = new function () {
                     xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
             success: function( res, textStatus, jQxhr ) {
-                node = JSON.parse(res);
-                console.log("addNewNodes(data):" + textStatus);
+                console.log("removeNode(data):" + textStatus);
                 console.log(node);
             },
             error: function(jqXhr, textStatus, errorThrown) {
-                console.log("addNewNodes(errorThrown):" + errorThrown);
+                console.log("removeNode(errorThrown):" + errorThrown);
             }
         });
         return node;

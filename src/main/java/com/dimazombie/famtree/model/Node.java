@@ -9,17 +9,19 @@ public class Node {
     public Long parentId;
     public String name;
     public String bio;
+    public Long imageId;
     public String dateOfBirth;
     public List<Node> ancestors;
 
     public Node() {
     }
 
-    public Node(Long id, Long parentId, String name, String bio, String dateOfBirth) {
+    public Node(Long id, Long parentId, String name, String bio, Long imageId, String dateOfBirth) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
         this.bio = bio;
+        this.imageId = imageId;
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -53,6 +55,14 @@ public class Node {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
     public String getDateOfBirth() {
