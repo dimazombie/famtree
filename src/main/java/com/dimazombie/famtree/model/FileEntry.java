@@ -2,8 +2,6 @@ package com.dimazombie.famtree.model;
 
 import com.google.gson.Gson;
 
-import java.io.Serializable;
-
 public class FileEntry {
     public Long id;
     public String name;
