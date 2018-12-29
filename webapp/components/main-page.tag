@@ -9,7 +9,7 @@
   <div id="inner_remaining"></div>
   <div class="md-modal md-effect-1 {md-show: dialogShowing}">
       <div class="md-content">
-          <h3>{node && node.name}</h3>
+          <h3 ref="name" contenteditable="true" onkeyup={setName}>{node && node.name}</h3>
           <div>
               <img src={node && node.imageId && (gateway.getFilePathById(node.imageId))}/>
               <p>
@@ -57,6 +57,9 @@
         position: relative;
         min-height:300px;
         z-index: 3;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
     }
 
     .tree ul {
@@ -203,6 +206,9 @@
         position: relative;
         border-radius: 3px;
         margin: 0 auto;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
     }
 
     .md-content h3 {
@@ -302,8 +308,13 @@
         self.update()
     }
 
+    this.updateCard = (node) => {
+        self.refs.name.textContent = node.name
+    }
+
     this.showcard = (node) => {
         self.node = node
+        self.updateCard(node)
         self.dialogShowing = true
         self.update()
     }
@@ -317,6 +328,7 @@
     this.submitNode = () => {
         gateway.submitNode(self.node)
         self.dialogShowing = false
+        self.updatenodes()
     }
 
     this.closeNode = () => {
@@ -330,8 +342,6 @@
     }
 
     this.addNode = () => {
-        console.log('addNode')
-        console.log(self.node.id)
         var node = gateway.addNewNode(self.node.id)
         self.node.ancestors = self.node.ancestors || []
         self.node.ancestors.push(node)
@@ -343,11 +353,13 @@
     }
 
     this.handleFile = (e) => {
-        console.log(e.target.files);
         if(e.target.files.length > 0) {
-            var imageId = gateway.sendFile(e.target.files);
-            self.node.imageId = imageId;
+            self.node.imageId = gateway.sendFile(e.target.files);
         }
+    }
+
+    this.setName = (e) => {
+        self.node.name = e.target.textContent
     }
   </script>
 </main-page>
