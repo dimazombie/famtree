@@ -9,21 +9,31 @@
   <div id="inner_remaining"></div>
   <div class="md-modal md-effect-1 {md-show: dialogShowing}">
       <div class="md-content">
-          <h3 ref="name" contenteditable="true" onkeyup={setName}>{node && node.name}</h3>
+          <h3 ref="name" contenteditable="true" onkeyup={setName} />
           <div>
-              <img src={node && node.imageId && (gateway.getFilePathById(node.imageId))}/>
+              <img ref="image" />
               <p>
                 {node && node.bio}
               </p>
           </div>
           <div>
-              <div class="btn-group" role="group" aria-label="Basic example">
+              <div class="btn-group" role="group">
                 <input id="upload_button" ref="upload_button" type="file" accept="image/*" onchange={handleFile}/>
-                <button type="button" class="btn btn-secondary" onclick={chooseFile}>Загрузить фото</button>
-                <button type="button" class="btn btn-secondary" onclick={addNode}>Добавить родителя</button>
-                <button type="button" class="btn btn-secondary" onclick={removeNode}>Удалить</button>
+
+                <div class="btn-group" role="group">
+                 <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Операции
+                  <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#" onclick={chooseFile}>Загрузить фото</a></li>
+                    <li><a href="#" onclick={addNode}>Добавить родителя</a></li>
+                    <li><a href="#" onclick={removeNode}>Удалить</a></li>
+                  </ul>
+                </div>
                 <button type="button" class="btn btn-secondary" onclick={submitNode}>Сохранить</button>
-                <button type="button" class="btn btn-secondary" onclick={closeNode}>Закрыть</button>
+                <button type="button" class="btn btn-secondary" onclick={closeCard}>Закрыть</button>
               </div>
           </div>
       </div>
@@ -234,15 +244,6 @@
         padding: 10px 0;
     }
 
-    .md-content > div ul {
-        margin: 0;
-        padding: 0 0 30px 20px;
-    }
-
-    .md-content > div ul li {
-        padding: 5px 0;
-    }
-
     .md-content button {
         display: block;
         margin: 0 auto;
@@ -295,9 +296,12 @@
     button:hover {
         background: #af996d;
     }
+
+
   </style>
   <script>
     var self = this
+    var tmpNode
 
     this.on('before-mount', function() {
         self.updatenodes()
@@ -308,44 +312,58 @@
         self.update()
     }
 
-    this.updateCard = (node) => {
+    this.updateCardData = (node) => {
         self.refs.name.textContent = node.name
+        if(node.imageId) {
+            self.refs.image.src = gateway.getFilePathById(node.imageId)
+        }
+    }
+
+    this.clearCardData = () => {
+        console.log('clear card data')
+        self.tmpNode = {}
+        self.refs.name.textContent = '';
+        self.refs.image.src = '';
     }
 
     this.showcard = (node) => {
+        self.tmpNode = copyObject(node)
         self.node = node
-        self.updateCard(node)
+        self.updateCardData(node)
         self.dialogShowing = true
         self.update()
     }
 
    this.removeNode = () => {
         gateway.removeNode(self.node)
-        self.dialogShowing = false
-        self.updatenodes()
+        self.closeCard()
+
+        self.updatenodes() //temp WA - TODO: update structure
     }
 
     this.submitNode = () => {
-        gateway.submitNode(self.node)
-        self.dialogShowing = false
-        self.updatenodes()
+        gateway.submitNode(self.tmpNode)
+        self.closeCard()
+
+        self.updatenodes() //temp WA - TODO: update structure
     }
 
-    this.closeNode = () => {
+    this.closeCard = () => {
         self.dialogShowing = false
+        self.clearCardData()
     }
 
     this.initTree = () => {
         var node = gateway.addNewNode(null)
         self.nodes.push(node)
-        self.dialogShowing = false
+        self.closeCard()
     }
 
     this.addNode = () => {
         var node = gateway.addNewNode(self.node.id)
         self.node.ancestors = self.node.ancestors || []
         self.node.ancestors.push(node)
-        self.dialogShowing = false
+        self.closeCard()
     }
 
     this.chooseFile = () => {
@@ -354,12 +372,19 @@
 
     this.handleFile = (e) => {
         if(e.target.files.length > 0) {
-            self.node.imageId = gateway.sendFile(e.target.files);
+            var imageId = gateway.sendFile(e.target.files)
+            self.setImageId(imageId)
         }
+
+    }
+
+    this.setImageId = (imageId) => {
+        self.tmpNode.imageId = imageId
+        self.refs.image.src = gateway.getFilePathById(imageId)
     }
 
     this.setName = (e) => {
-        self.node.name = e.target.textContent
+        self.tmpNode.name = e.target.textContent
     }
   </script>
 </main-page>
