@@ -4,7 +4,7 @@
         <li each={node in opts.nodes} node={node}>
             <div class="item">
                 <div class="polaroid">
-                    <img src="./pic/new-user.jpg" height="100px" width="100px" onclick={() => this.showcard(node)} >
+                    <img src={gateway.getImageSrcById(node.imageId)} onclick={() => this.showcard(node)} >
                     <div class="caption">
                         {node.name}
                     </div>
@@ -22,6 +22,12 @@
         background: #fff;
         padding: 1rem;
         box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+
+    }
+
+    .polaroid > img {
+        max-width: 100px;
+        max-height: 100px;
     }
 
     .caption {

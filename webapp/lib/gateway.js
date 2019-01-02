@@ -5,6 +5,8 @@ var gateway = new function () {
     this.nodesPath = "/nodes";
     this.filesPath = "/files";
 
+    this.unknownImageSrc = "/pic/new-user.jpg";
+
     this.authentication = (username, password)=> {
         var data = {username: username, password: password};
         var token;
@@ -173,8 +175,14 @@ var gateway = new function () {
         return fileId;
     }
 
-    this.getFilePathById = (fileId)=> {
-        return this.backendUri + this.filesPath + "/" + fileId;
+    this.getImageSrcById = (fileId)=> {
+        var res
+        if(fileId) {
+            res = this.backendUri + this.filesPath + "/" + fileId
+        } else {
+            res = this.unknownImageSrc
+        }
+        return res;
     }
 
 }

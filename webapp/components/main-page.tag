@@ -9,32 +9,26 @@
   <div id="inner_remaining"></div>
   <div class="md-modal md-effect-1 {md-show: dialogShowing}">
       <div class="md-content">
-          <h3 ref="name" contenteditable="true" onkeyup={setName} />
-          <div>
-              <img ref="image" />
-              <p>
-                {node && node.bio}
-              </p>
-          </div>
-          <div>
-              <div class="btn-group" role="group">
-                <input id="upload_button" ref="upload_button" type="file" accept="image/*" onchange={handleFile}/>
+          <h3 ref="name" contenteditable="true" onblur={setName}/>
+          <img ref="image"/>
+          <p ref="bio" contenteditable="true" onblur={setBio}/>
+          <div class="btn-group" role="group">
+            <input id="upload_button" ref="upload_button" type="file" accept="image/*" onchange={handleFile}/>
 
-                <div class="btn-group" role="group">
-                 <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Операции
-                  <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#" onclick={chooseFile}>Загрузить фото</a></li>
-                    <li><a href="#" onclick={addNode}>Добавить родителя</a></li>
-                    <li><a href="#" onclick={removeNode}>Удалить</a></li>
-                  </ul>
-                </div>
-                <button type="button" class="btn btn-secondary" onclick={submitNode}>Сохранить</button>
-                <button type="button" class="btn btn-secondary" onclick={closeCard}>Закрыть</button>
-              </div>
+            <div class="btn-group" role="group">
+             <div class="btn-group" role="group">
+              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Операции
+              <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#" onclick={chooseFile}>Загрузить фото</a></li>
+                <li><a href="#" onclick={addNode}>Добавить родителя</a></li>
+                <li><a href="#" onclick={removeNode}>Удалить</a></li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick={submitNode}>Сохранить</button>
+            <button type="button" class="btn btn-secondary" onclick={closeCard}>Закрыть</button>
           </div>
       </div>
   </div>
@@ -170,9 +164,9 @@
         position: fixed;
         top: 50%;
         left: 50%;
-        width: 50%;
-        max-width: 630px;
-        min-width: 320px;
+        width: 90%;
+        max-width: 2030px;
+        min-width: 620px;
         height: auto;
         z-index: 2000;
         visibility: hidden;
@@ -219,6 +213,7 @@
         -moz-user-select: none;
         -khtml-user-select: none;
         user-select: none;
+        overflow:hidden;
     }
 
     .md-content h3 {
@@ -239,9 +234,9 @@
         font-size: 1.15em;
     }
 
-    .md-content > div p {
-        margin: 0;
-        padding: 10px 0;
+    .md-content > p {
+        margin: 20px;
+        text-align: justify;
     }
 
     .md-content button {
@@ -251,7 +246,7 @@
     }
 
     .md-content img {
-        margin-right: 15px;
+        margin: 20px;
         float: left;
         width: 250px;
     }
@@ -314,8 +309,9 @@
 
     this.updateCardData = (node) => {
         self.refs.name.textContent = node.name
+        self.refs.bio.textContent = node.bio
         if(node.imageId) {
-            self.refs.image.src = gateway.getFilePathById(node.imageId)
+            self.refs.image.src = gateway.getImageSrcById(node.imageId)
         }
     }
 
@@ -323,6 +319,7 @@
         console.log('clear card data')
         self.tmpNode = {}
         self.refs.name.textContent = '';
+        self.refs.bio.textContent = '';
         self.refs.image.src = '';
     }
 
@@ -380,11 +377,15 @@
 
     this.setImageId = (imageId) => {
         self.tmpNode.imageId = imageId
-        self.refs.image.src = gateway.getFilePathById(imageId)
+        self.refs.image.src = gateway.getImageSrcById(imageId)
     }
 
     this.setName = (e) => {
         self.tmpNode.name = e.target.textContent
+    }
+
+    this.setBio = (e) => {
+        self.tmpNode.bio = e.target.textContent
     }
   </script>
 </main-page>
