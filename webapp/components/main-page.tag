@@ -12,6 +12,7 @@
           <h3 ref="name" contenteditable="true" onblur={setName}/>
           <img ref="image"/>
           <p ref="bio" contenteditable="true" onblur={setBio}/>
+
           <div class="btn-group" role="group">
             <input id="upload_button" ref="upload_button" type="file" accept="image/*" onchange={handleFile}/>
 
@@ -213,7 +214,7 @@
         -moz-user-select: none;
         -khtml-user-select: none;
         user-select: none;
-        overflow:hidden;
+
     }
 
     .md-content h3 {
@@ -237,6 +238,9 @@
     .md-content > p {
         margin: 20px;
         text-align: justify;
+        max-width: 100%;
+        overflow-x: hidden;
+        max-height: 70vh;
     }
 
     .md-content button {
@@ -309,7 +313,7 @@
 
     this.updateCardData = (node) => {
         self.refs.name.textContent = node.name
-        self.refs.bio.textContent = node.bio
+        self.refs.bio.innerHTML = node.bio
         if(node.imageId) {
             self.refs.image.src = gateway.getImageSrcById(node.imageId)
         }
@@ -319,7 +323,7 @@
         console.log('clear card data')
         self.tmpNode = {}
         self.refs.name.textContent = '';
-        self.refs.bio.textContent = '';
+        self.refs.bio.innerHTML = '';
         self.refs.image.src = '';
     }
 
@@ -385,7 +389,7 @@
     }
 
     this.setBio = (e) => {
-        self.tmpNode.bio = e.target.textContent
+        self.tmpNode.bio = e.target.innerHTML
     }
   </script>
 </main-page>
