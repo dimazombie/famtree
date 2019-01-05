@@ -9,11 +9,17 @@
   <div id="inner_remaining"></div>
   <div class="md-modal md-effect-1 {md-show: dialogShowing}">
       <div class="md-content">
-          <h3 ref="name" contenteditable="true" onblur={setName}/>
-          <img ref="image"/>
-          <p ref="bio" contenteditable="true" onblur={setBio}/>
+          <div class="md-header">
+            <h3 ref="name" contenteditable="true" onblur={setName}/>
+          </div>
 
-          <div class="btn-group" role="group">
+          <div class="md-main">
+                <img ref="image" if={node && node.imageId}/>
+                <p ref="bio" contenteditable="true" onblur={setBio}/>
+          </div>
+
+
+          <div class="btn-group md-footer" role="group">
             <input id="upload_button" ref="upload_button" type="file" accept="image/*" onchange={handleFile}/>
 
             <div class="btn-group" role="group">
@@ -184,21 +190,6 @@
         visibility: visible;
     }
 
-    .md-overlay {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        visibility: hidden;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        opacity: 0;
-        background: rgba(219,192,137,0.8);
-        -webkit-transition: all 0.3s;
-        -moz-transition: all 0.3s;
-        transition: all 0.3s;
-    }
-
     .md-show ~ .md-overlay {
         opacity: 1;
         visibility: visible;
@@ -208,16 +199,19 @@
     .md-content {
         color: #000;
         background: #e9d9b8;
-        position: relative;
+
+        display: inline-block;
+        width: 100%;
+
         border-radius: 3px;
         margin: 0 auto;
+
         -moz-user-select: none;
         -khtml-user-select: none;
         user-select: none;
-
     }
 
-    .md-content h3 {
+    .md-header h3 {
         margin: 0;
         padding: 0.4em;
         text-align: center;
@@ -228,31 +222,25 @@
         border-radius: 3px 3px 0 0;
     }
 
-    .md-content > div {
-        padding: 15px 40px 30px;
-        margin: 0;
-        font-weight: 300;
-        font-size: 1.15em;
-    }
-
-    .md-content > p {
-        margin: 20px;
-        text-align: justify;
-        max-width: 100%;
-        overflow-x: hidden;
-        max-height: 70vh;
-    }
-
     .md-content button {
         display: block;
         margin: 0 auto;
         font-size: 0.8em;
     }
 
-    .md-content img {
-        margin: 20px;
+    .md-main img {
+        margin-right: 15px;
+        margin-bottom: 15px;
         float: left;
         width: 250px;
+    }
+
+    .md-main {
+        margin: 15px 15px 0 15px;
+        text-align: justify;
+        max-width: 100%;
+        overflow-x: hidden;
+        max-height: 55vh;
     }
 
     /* Individual modal styles with animations/transitions */
@@ -267,6 +255,16 @@
         -webkit-transition: all 0.3s;
         -moz-transition: all 0.3s;
         transition: all 0.3s;
+    }
+
+    .md-main {
+        max-height: 55vh;
+
+    }
+
+    .md-footer {
+       width: 100%;
+       padding: 15px 15px 15px;
     }
 
     .md-show.md-effect-1 .md-content {
@@ -313,8 +311,9 @@
 
     this.updateCardData = (node) => {
         self.refs.name.textContent = node.name
-        self.refs.bio.innerHTML = node.bio
+        this.refs.bio.innerHTML = node.bio
         if(node.imageId) {
+            self.update()
             self.refs.image.src = gateway.getImageSrcById(node.imageId)
         }
     }
@@ -324,7 +323,9 @@
         self.tmpNode = {}
         self.refs.name.textContent = '';
         self.refs.bio.innerHTML = '';
-        self.refs.image.src = '';
+        if(node.imageId) {
+            self.refs.image.src = '';
+        }
     }
 
     this.showcard = (node) => {
