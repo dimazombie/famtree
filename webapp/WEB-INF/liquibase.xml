@@ -11,12 +11,14 @@
             <column name="image_id" type="float"/>
         </createTable>
     </changeSet>
+
     <changeSet id="2019-01-07--02-initial-schema-import" author="dimazombie">
         <createTable tableName="file_entry">
             <column name="id" type="integer" autoIncrement="true"><constraints primaryKey="true"/></column>
             <column name="name" type="varchar(4000)"/>
         </createTable>
     </changeSet>
+
     <changeSet id="2019-01-07--03-initial-schema-import" author="dimazombie">
         <addForeignKeyConstraint baseColumnNames="image_id"
                                  baseTableName="Node"

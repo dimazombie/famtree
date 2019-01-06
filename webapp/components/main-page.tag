@@ -258,7 +258,6 @@
 
     .md-main {
         max-height: 55vh;
-
     }
 
     .md-footer {
