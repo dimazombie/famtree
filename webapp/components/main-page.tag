@@ -14,10 +14,9 @@
           </div>
 
           <div class="md-main">
-                <img ref="image" if={node && node.imageId}/>
+                <img ref="image" if={tmpNode && tmpNode.imageId}/>
                 <p ref="bio" contenteditable="true" onblur={setBio}/>
           </div>
-
 
           <div class="btn-group md-footer" role="group">
             <input id="upload_button" ref="upload_button" type="file" accept="image/*" onchange={handleFile}/>
@@ -311,8 +310,8 @@
 
     this.updateCardData = (node) => {
         self.refs.name.textContent = node.name
-        this.refs.bio.innerHTML = node.bio
-        if(node.imageId) {
+        self.refs.bio.innerHTML = node.bio
+        if(self.node && self.node.imageId) {
             self.update()
             self.refs.image.src = gateway.getImageSrcById(node.imageId)
         }
@@ -323,7 +322,7 @@
         self.tmpNode = {}
         self.refs.name.textContent = '';
         self.refs.bio.innerHTML = '';
-        if(node.imageId) {
+        if(self.node && self.node.imageId) {
             self.refs.image.src = '';
         }
     }
@@ -382,6 +381,7 @@
 
     this.setImageId = (imageId) => {
         self.tmpNode.imageId = imageId
+        self.update() //WA to show card
         self.refs.image.src = gateway.getImageSrcById(imageId)
     }
 

@@ -24,4 +24,23 @@
         <res-type>org.h2.jdbcx.JdbcDataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
+    <context-param>
+        <param-name>liquibase.changelog</param-name>
+        <param-value>webapp/WEB-INF/liquibase.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.datasource</param-name>
+        <param-value>jdbc/ds</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.onerror.fail</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+    </listener>
 </web-app>

@@ -21,7 +21,7 @@ public class JDBCFileEntryRepository implements FileEntryRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "select t.id, t.name from FileEntry t where t.id = ?";
+            String sql = "select t.id, t.name from FILE_ENTRY t where t.id = ?";
             logger.debug("SQL: " + sql);
             logger.debug("with bind var: " + fileEntryId);
 
@@ -54,7 +54,7 @@ public class JDBCFileEntryRepository implements FileEntryRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "insert into FileEntry(name) values (?)";
+            String sql = "insert into FILE_ENTRY(name) values (?)";
             logger.debug("SQL: " + sql);
             logger.debug("with bind var: " + fileEntry.getName());
 

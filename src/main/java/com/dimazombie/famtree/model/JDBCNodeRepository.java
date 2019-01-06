@@ -22,7 +22,7 @@ public class JDBCNodeRepository implements NodeRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "select n.id, n.parentId, n.name, n.bio, n.imageId, n.dateOfBirth from Node n where n.parentId is null";
+            String sql = "select t.id, t.parent_id, t.name, t.bio, t.image_id, t.date_of_birth from NODE t where t.parent_id is null";
             logger.debug("SQL: " + sql);
 
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -30,9 +30,9 @@ public class JDBCNodeRepository implements NodeRepository {
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 Long id = rs.getLong("id");
-                Long parentId = rs.getLong("parentId");
+                Long parentId = rs.getLong("parent_id");
                 if (rs.wasNull()) parentId = null;
-                Long imageId = rs.getLong("imageId");
+                Long imageId = rs.getLong("image_id");
                 if (rs.wasNull()) imageId = null;
 
                 Node node = new Node(
@@ -41,7 +41,7 @@ public class JDBCNodeRepository implements NodeRepository {
                         rs.getString("name"),
                         rs.getString("bio"),
                         imageId,
-                        rs.getString("dateOfBirth")
+                        rs.getString("date_of_birth")
                 );
 
                 List<Node> ancestors = getAncestors(id, conn);
@@ -72,7 +72,7 @@ public class JDBCNodeRepository implements NodeRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "select n.id, n.parentId, n.name, n.bio, n.imageId, n.dateOfBirth from Node n where n.id = ?";
+            String sql = "select t.id, t.parent_id, t.name, t.bio, t.image_id, t.date_of_birth from NODE t where t.id = ?";
             logger.debug("SQL: " + sql);
             logger.debug("with bind var: " + nodeId);
 
@@ -81,9 +81,9 @@ public class JDBCNodeRepository implements NodeRepository {
 
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
-                Long parentId = rs.getLong("parentId");
+                Long parentId = rs.getLong("parent_id");
                 if (rs.wasNull()) parentId = null;
-                Long imageId = rs.getLong("imageId");
+                Long imageId = rs.getLong("image_id");
                 if (rs.wasNull()) imageId = null;
 
                 node = new Node(
@@ -92,7 +92,7 @@ public class JDBCNodeRepository implements NodeRepository {
                         rs.getString("name"),
                         rs.getString("bio"),
                         imageId,
-                        rs.getString("dateOfBirth")
+                        rs.getString("date_of_birth")
                 );
             }
             logger.debug("rs: " + node);
@@ -109,7 +109,7 @@ public class JDBCNodeRepository implements NodeRepository {
     private List<Node> getAncestors(Long nodeId, Connection conn) throws SQLException {
         List<Node> nodes = new ArrayList<Node>();
 
-        String sql = "select n.id, n.parentId, n.name, n.bio, n.imageId, n.dateOfBirth from Node n where n.parentId = ?";
+        String sql = "select t.id, t.parent_id, t.name, t.bio, t.image_id, t.date_of_birth from NODE t where t.parent_id = ?";
         logger.debug("SQL: " + sql);
         logger.debug("with bind var: " + nodeId);
 
@@ -119,9 +119,9 @@ public class JDBCNodeRepository implements NodeRepository {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Long id = rs.getLong("id");
-            Long parentId = rs.getLong("parentId");
+            Long parentId = rs.getLong("parent_id");
             if (rs.wasNull()) parentId = null;
-            Long imageId = rs.getLong("imageId");
+            Long imageId = rs.getLong("image_id");
             if (rs.wasNull()) imageId = null;
 
             Node node = new Node(
@@ -130,7 +130,7 @@ public class JDBCNodeRepository implements NodeRepository {
                     rs.getString("name"),
                     rs.getString("bio"),
                     imageId,
-                    rs.getString("dateOfBirth")
+                    rs.getString("date_of_birth")
             );
 
             List<Node> ancestors = getAncestors(id, conn);
@@ -152,7 +152,7 @@ public class JDBCNodeRepository implements NodeRepository {
             conn = ds.getConnection();
 
             if(node.getId() == null) {
-                String sql = "insert into Node(parentId, name, bio, imageId, dateOfBirth) values (?, ?, ?, ?, ?)";
+                String sql = "insert into NODE(parent_id, name, bio, image_id, date_of_birth) values (?, ?, ?, ?, ?)";
                 logger.debug("SQL: " + sql);
                 logger.debug("with bind var: " + node.getParentId());
                 logger.debug("with bind var: " + node.getName());
@@ -183,7 +183,8 @@ public class JDBCNodeRepository implements NodeRepository {
                 }
                 logger.debug("rs: " + node);
             } else {
-                String sql = "update Node set parentId = ?, name = ?, bio = ?, imageId = ?, dateOfBirth = ? where id = ?";
+                String sql = "update NODE t set t.parent_id = ?, t.name = ?, t.bio = ?, t.image_id = ?, " +
+                        "t.date_of_birth = ? where t.id = ?";
                 logger.debug("SQL: " + sql);
                 logger.debug("with bind var: " + node.getParentId());
                 logger.debug("with bind var: " + node.getName());
@@ -228,7 +229,7 @@ public class JDBCNodeRepository implements NodeRepository {
             DataSource ds = (DataSource) ctx.lookup("jdbc/ds");
             conn = ds.getConnection();
 
-            String sql = "delete from Node where id = ?";
+            String sql = "delete from NODE t where t.id = ?";
             logger.debug("SQL: " + sql);
             logger.debug("with bind var: " + node.getId());
 

@@ -1,0 +1,30 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="2019-01-07--01-initial-schema-import" author="dimazombie">
+        <createTable tableName="node">
+            <column name="id" type="integer" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="parent_id" type="integer"/>
+            <column name="name" type="varchar(4000)"/>
+            <column name="date_of_birth" type="varchar(4000)"/>
+            <column name="bio" type="text"/>
+            <column name="image_id" type="float"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2019-01-07--02-initial-schema-import" author="dimazombie">
+        <createTable tableName="file_entry">
+            <column name="id" type="integer" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="name" type="varchar(4000)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2019-01-07--03-initial-schema-import" author="dimazombie">
+        <addForeignKeyConstraint baseColumnNames="image_id"
+                                 baseTableName="Node"
+                                 constraintName="fk_node_file_entry"
+                                 onDelete="RESTRICT"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="file_entry"/>
+    </changeSet>
+
+</databaseChangeLog>
