@@ -21,12 +21,22 @@
 
     <changeSet id="2019-01-07--03-initial-schema-import" author="dimazombie">
         <addForeignKeyConstraint baseColumnNames="image_id"
-                                 baseTableName="Node"
+                                 baseTableName="node"
                                  constraintName="fk_node_file_entry"
                                  onDelete="RESTRICT"
                                  onUpdate="RESTRICT"
                                  referencedColumnNames="id"
                                  referencedTableName="file_entry"/>
+    </changeSet>
+
+    <changeSet id="2019-01-08--04-initial-schema-import" author="dimazombie">
+        <createTable tableName="user">
+            <column name="id" type="integer" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="login" type="varchar(4000)"/>
+            <column name="password" type="varchar(4000)"/>
+            <column name="first_name" type="varchar(4000)"/>
+            <column name="last_name" type="varchar(4000)"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>

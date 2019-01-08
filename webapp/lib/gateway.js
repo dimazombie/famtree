@@ -7,8 +7,8 @@ var gateway = new function () {
 
     this.unknownImageSrc = "/pic/new-user.jpg";
 
-    this.authentication = (username, password)=> {
-        var data = {username: username, password: password};
+    this.authentication = (login, password)=> {
+        var data = {login: login, password: password};
         var token;
         $.ajax({
             type: "POST",

@@ -12,7 +12,7 @@ public class JDBCFileEntryRepository implements FileEntryRepository {
     private Logger logger = LoggerFactory.getLogger(FileEntryRepository.class);
 
     @Override
-    public FileEntry getById(String fileEntryId) {
+    public FileEntry findById(String fileEntryId) {
         Connection conn = null;
         try {
             FileEntry fileEntry = null;

@@ -1,0 +1,12 @@
+@startuml
+
+autonumber "<font color=red><b>0  "
+actor "HTTP Client" as httpclient
+httpclient -> NodeResource: GET /api/nodes
+httpclient <-- NodeResource: 401 Unauthorized
+httpclient -> AuthResource: POST /api/authentication
+httpclient <-- AuthResource: Bearer %token%
+httpclient -> NodeResource: GET /api/nodes Authorization: Bearer %token%
+httpclient <-- NodeResource: 200 %JSON%
+
+@enduml

@@ -1,18 +1,24 @@
 package com.dimazombie.famtree.web;
 
+import com.dimazombie.famtree.util.KeyGenerator;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.lang.reflect.Method;
+import java.security.Key;
 import java.util.List;
+
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Provider
 public class AuthFilter implements ContainerRequestFilter {
@@ -20,8 +26,10 @@ public class AuthFilter implements ContainerRequestFilter {
 
     @Context private ResourceInfo resourceInfo;
 
+    @Inject KeyGenerator keyGenerator;
+
     private static final String AUTHENTICATION_SCHEME = "Bearer";
-    private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED).build();
+    private static final Response ACCESS_DENIED = Response.status(UNAUTHORIZED).build();
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -29,9 +37,10 @@ public class AuthFilter implements ContainerRequestFilter {
         if(method.isAnnotationPresent(Secured.class)) {
             final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
-            List<String> authorization = headers.get(HttpHeaders.AUTHORIZATION);
+            List<String> authorization = headers.get(AUTHORIZATION);
 
             if(authorization == null || authorization.isEmpty()) {
+                logger.error("#### invalid authorization header : " + authorization);
                 requestContext.abortWith(ACCESS_DENIED);
                 return;
             }
@@ -50,8 +59,8 @@ public class AuthFilter implements ContainerRequestFilter {
     }
 
     private void validateToken(String token) throws Exception {
-        if(!token.equals("secret_token")) {
-            throw new Exception("not validddd");
-        }
+        Key key = keyGenerator.generateKey();
+        Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        logger.info("#### valid token : " + token);
     }
 }

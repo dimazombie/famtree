@@ -73,7 +73,7 @@ public class FileResource {
     @Path("/{fileEntryId}")
     public Response getFile(@PathParam("fileEntryId") String fileEntryId) {
 
-        FileEntry fileEntry = repo.getById(fileEntryId);
+        FileEntry fileEntry = repo.findById(fileEntryId);
         logger.debug("found fileEntry:" + fileEntry);
 
         String filePathName = getFilePath(fileEntry);

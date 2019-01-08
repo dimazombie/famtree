@@ -29,7 +29,7 @@ public class NodeResource {
     public Node addNewNode(@FormParam("parentId") String parentId) {
         Node newNode = new Node();
         if(!StringUtils.isEmpty(parentId)) {
-            Node parent = repo.getById(parentId);
+            Node parent = repo.findById(parentId);
             newNode.setParentId(parent.getId());
         }
         newNode = repo.persist(newNode);
@@ -39,7 +39,7 @@ public class NodeResource {
     @DELETE
     @Secured
     public Node removeNode(@FormParam("nodeId") String nodeId) {
-        Node node = repo.getById(nodeId);
+        Node node = repo.findById(nodeId);
         repo.remove(node);
         return node;
     }
@@ -49,7 +49,7 @@ public class NodeResource {
     public Node saveNode(@FormParam("id") String nodeId, @FormParam("parentId") String parentId,
                          @FormParam("name") String name, @FormParam("bio") String bio,
                          @FormParam("imageId") String imageId, @FormParam("dateOfBirth") String dateOfBirth) {
-        Node node = repo.getById(nodeId);
+        Node node = repo.findById(nodeId);
         if(!StringUtils.isEmpty(parentId)) {
             node.setParentId(Long.valueOf(parentId));
         }

@@ -63,7 +63,7 @@ public class JDBCNodeRepository implements NodeRepository {
     }
 
     @Override
-    public Node getById(String nodeId) {
+    public Node findById(String nodeId) {
         Connection conn = null;
         try {
             Node node = null;
