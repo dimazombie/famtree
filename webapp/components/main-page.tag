@@ -317,7 +317,7 @@
     }
 
     this.clearCardData = () => {
-        console.log('clear card data')
+        app.log('clear card data')
         self.tmpNode = {}
         self.refs.name.textContent = '';
         self.refs.bio.innerHTML = '';

@@ -66,25 +66,25 @@
         this.refs.inputLogin.value = null;
         this.refs.inputPassword.value = null;
 
-        console.log("loginpage: try to authenticate");
+        app.log("loginpage: try to authenticate");
         var token = null;
 
         try{
             token = gateway.authentication(login, password);
-            console.log(token);
+            app.log(token);
             if (token) {
-                console.log('loginpage: successfully authenticated');
+                app.log('loginpage: successfully authenticated');
                 setCookie("token", token);
                 opts.onlogin(token);
             }
             else {
-                console.log('loginpage: authentication failed');
+                app.log('loginpage: authentication failed');
                 this.errorAuthentication = true;
             }
         }
         catch(e){
-            console.log('loginpage: connection error');
-            console.log(e);
+            app.log('loginpage: connection error');
+            app.log(e);
             this.errorAuthentication = true;
         }
       };

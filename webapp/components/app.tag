@@ -9,23 +9,23 @@
     </style>
     <script>
         var token = getCookie("token");
-        console.log(token);
+        app.log(token);
         login(token) {
-            console.log("app: try to login");
+            app.log("app: try to login");
 
             try{
                 this.nodes = gateway.getAllNodes(token);
-                console.log("app: get user data successfully, user data is =" + this.nodes);
+                app.log("app: get user data successfully, user data is =" + this.nodes);
             }
             catch(e){
-                console.log('app: connection error - ' + e);
+                app.log('app: connection error - ' + e);
             }
 
             this.update();
         }
 
         logout() {
-            console.log("app: clean token");
+            app.log("app: clean token");
 
             setCookie("token", "");
 

@@ -1,3 +1,8 @@
+var app = {
+  "debug": true,
+  "log": function(message){if(app.debug){console.log(message)}}
+}
+
 window.getCookie = function(name) {
   var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
   if (match) return match[2];

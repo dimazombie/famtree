@@ -22,7 +22,7 @@ var gateway = new function () {
                 token = res;
             },
             error: function(req, err) {
-                console.log(req);
+                app.log(req);
                 throw err;
 
             }
@@ -40,17 +40,17 @@ var gateway = new function () {
             timeout: 1000,
             beforeSend: (xhr)=> {
                 var token = getCookie("token");
-                console.log(token);
+                app.log(token);
                 if (typeof token !== 'undefined')
                     xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
             success: function( res, textStatus, jQxhr ) {
                 nodes = res;
-                console.log("getAllNodes(data):" + textStatus);
-                console.log(res);
+                app.log("getAllNodes(data):" + textStatus);
+                app.log(res);
             },
             error: function(jqXhr, textStatus, errorThrown) {
-                console.log("getAllNodes(errorThrown):" + errorThrown);
+                app.log("getAllNodes(errorThrown):" + errorThrown);
             }
         });
         return nodes;
@@ -69,17 +69,17 @@ var gateway = new function () {
             timeout: 1000,
             beforeSend: (xhr)=> {
                 var token = getCookie("token");
-                console.log(token);
+                app.log(token);
                 if (typeof token !== 'undefined')
                     xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
             success: function( res, textStatus, jQxhr ) {
                 node = JSON.parse(res);
-                console.log("addNewNodes(data):" + textStatus);
-                console.log(node);
+                app.log("addNewNodes(data):" + textStatus);
+                app.log(node);
             },
             error: function(jqXhr, textStatus, errorThrown) {
-                console.log("addNewNodes(errorThrown):" + errorThrown);
+                app.log("addNewNodes(errorThrown):" + errorThrown);
             }
         });
         return node;
@@ -87,7 +87,7 @@ var gateway = new function () {
 
     this.submitNode = (node)=> {
         var data = node;
-        console.log(data)
+        app.log(data)
         $.ajax({
             type: "PUT",
             url : this.backendUri + this.nodesPath,
@@ -98,16 +98,16 @@ var gateway = new function () {
             timeout: 1000,
             beforeSend: (xhr)=> {
                 var token = getCookie("token");
-                console.log(token);
+                app.log(token);
                 if (typeof token !== 'undefined')
                     xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
             success: function( res, textStatus, jQxhr ) {
-                console.log("saveNode(data):" + textStatus);
-                console.log(node);
+                app.log("saveNode(data):" + textStatus);
+                app.log(node);
             },
             error: function(jqXhr, textStatus, errorThrown) {
-                console.log("saveNode(errorThrown):" + errorThrown);
+                app.log("saveNode(errorThrown):" + errorThrown);
             }
         });
         return node;
@@ -125,16 +125,16 @@ var gateway = new function () {
             timeout: 1000,
             beforeSend: (xhr)=> {
                 var token = getCookie("token");
-                console.log(token);
+                app.log(token);
                 if (typeof token !== 'undefined')
                     xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
             success: function( res, textStatus, jQxhr ) {
-                console.log("removeNode(data):" + textStatus);
-                console.log(node);
+                app.log("removeNode(data):" + textStatus);
+                app.log(node);
             },
             error: function(jqXhr, textStatus, errorThrown) {
-                console.log("removeNode(errorThrown):" + errorThrown);
+                app.log("removeNode(errorThrown):" + errorThrown);
             }
         });
         return node;
@@ -157,18 +157,18 @@ var gateway = new function () {
             contentType: false,
             beforeSend: (xhr)=> {
                 var token = getCookie("token");
-                console.log(token);
+                app.log(token);
                 if (typeof token !== 'undefined')
                     xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
             },
             success: function( res, textStatus, jQxhr ) {
-                console.log(res);
+                app.log(res);
                 fileId = JSON.parse(res);
-                console.log("sendFile(data):" + textStatus);
-                console.log(fileId);
+                app.log("sendFile(data):" + textStatus);
+                app.log(fileId);
             },
             error: function(req, err) {
-                console.log(req);
+                app.log(req);
                 throw err;
             }
         });
