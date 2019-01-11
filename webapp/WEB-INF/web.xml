@@ -43,4 +43,9 @@
     <listener>
         <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
     </listener>
+
+    <context-param>
+        <param-name>org.eclipse.jetty.servlet.Default.dirAllowed</param-name>
+        <param-value>false</param-value>
+    </context-param>
 </web-app>
