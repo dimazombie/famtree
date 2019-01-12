@@ -10,8 +10,5 @@
   "license": "ISC",
   "dependencies": {
     "riot": "^3.13.1"
-  },
-  "devDependencies": {
-    "riot": "^3.13.1"
   }
 }

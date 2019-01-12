@@ -31,7 +31,8 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .idea/
-webapp/node_modules
+src/main/resources/webapp/node
+src/main/resources/webapp/node_modules
 package-lock.json
 *.lock.db
 *.trace.db
