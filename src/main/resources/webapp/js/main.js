@@ -3,6 +3,11 @@ var app = {
   "log": function(message){if(app.debug){console.log(message)}}
 }
 
+var session = {
+  "isAuthenticated": false,
+  "user": {}
+}
+
 window.getCookie = function(name) {
   var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
   if (match) return match[2];

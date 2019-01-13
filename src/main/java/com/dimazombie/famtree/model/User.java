@@ -7,6 +7,8 @@ public class User {
     public String firstName;
     public String lastName;
 
+    public static String PROPERTY_NAME = "#user";
+
     public User() {
     }
 

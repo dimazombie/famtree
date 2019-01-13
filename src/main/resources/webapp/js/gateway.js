@@ -2,6 +2,7 @@ var gateway = new function () {
     this.backendUri = "http://localhost:8889/api";
     this.backendSecurePrefix = "Bearer ";
 
+    this.currentUserPath = "/users/current"
     this.nodesPath = "/nodes";
     this.filesPath = "/files";
 
@@ -29,7 +30,37 @@ var gateway = new function () {
         });
         return token;
     }
-    
+
+    this.getUserData = ()=> {
+        var data;
+        $.ajax({
+            url : this.backendUri + this.currentUserPath,
+            type: "GET",
+            async: false,
+            cache: false,
+            timeout: 1000,
+            beforeSend: (xhr)=> {
+                var token = getCookie("token");
+                app.log(token);
+                if (typeof token !== 'undefined')
+                    xhr.setRequestHeader('Authorization', this.backendSecurePrefix + token);
+            },
+            success: function( res, textStatus, jQxhr ) {
+                data = res;
+                app.log("getUserData(data):" + textStatus);
+                app.log(res);
+                session.isAuthenticated = true;
+            },
+            error: function(jqXhr, textStatus, errorThrown) {
+                app.log("getUserData(errorThrown):" + errorThrown);
+                //TODO: to get rid of below code
+                session.isAuthenticated = false;
+                riot.update();
+            }
+        });
+        return data;
+    }
+
     this.getAllNodes = ()=> {
         var nodes;
         $.ajax({
@@ -51,6 +82,9 @@ var gateway = new function () {
             },
             error: function(jqXhr, textStatus, errorThrown) {
                 app.log("getAllNodes(errorThrown):" + errorThrown);
+                //TODO: to get rid of below code
+                session.isAuthenticated = false;
+                riot.update();
             }
         });
         return nodes;
@@ -80,6 +114,9 @@ var gateway = new function () {
             },
             error: function(jqXhr, textStatus, errorThrown) {
                 app.log("addNewNodes(errorThrown):" + errorThrown);
+                //TODO: to get rid of below code
+                session.isAuthenticated = false;
+                riot.update();
             }
         });
         return node;
@@ -108,6 +145,9 @@ var gateway = new function () {
             },
             error: function(jqXhr, textStatus, errorThrown) {
                 app.log("saveNode(errorThrown):" + errorThrown);
+                //TODO: to get rid of below code
+                session.isAuthenticated = false;
+                riot.update();
             }
         });
         return node;
@@ -135,6 +175,9 @@ var gateway = new function () {
             },
             error: function(jqXhr, textStatus, errorThrown) {
                 app.log("removeNode(errorThrown):" + errorThrown);
+                //TODO: to get rid of below code
+                session.isAuthenticated = false;
+                riot.update();
             }
         });
         return node;

@@ -1,6 +1,9 @@
 package com.dimazombie.famtree.web;
 
+import com.dimazombie.famtree.model.User;
+import com.dimazombie.famtree.model.UserRepository;
 import com.dimazombie.famtree.util.KeyGenerator;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +31,8 @@ public class AuthFilter implements ContainerRequestFilter {
 
     @Inject KeyGenerator keyGenerator;
 
+    @Inject UserRepository repo;
+
     private static final String AUTHENTICATION_SCHEME = "Bearer";
     private static final Response ACCESS_DENIED = Response.status(UNAUTHORIZED).build();
 
@@ -49,7 +54,11 @@ public class AuthFilter implements ContainerRequestFilter {
             logger.debug("token=" + token);
 
             try {
-                validateToken(token);
+                Claims claims = parseClaims(token);
+                String login = claims.getSubject();
+                logger.debug("login=" + login);
+                User user = repo.findByLogin(login);
+                requestContext.setProperty(User.PROPERTY_NAME, user);
             } catch (Exception e) {
                 logger.error("", e);
                 requestContext.abortWith(ACCESS_DENIED);
@@ -58,9 +67,8 @@ public class AuthFilter implements ContainerRequestFilter {
         }
     }
 
-    private void validateToken(String token) throws Exception {
+    private Claims parseClaims(String token) throws Exception {
         Key key = keyGenerator.generateKey();
-        Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-        logger.info("#### valid token : " + token);
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     }
 }

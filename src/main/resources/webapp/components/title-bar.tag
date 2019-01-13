@@ -2,7 +2,7 @@
   <h2>родословное дерево моей семьи</h2>
   <div class="post-detail">
       <span class="post-info">
-          <span>Имя Фамилия</span>
+          <span>{session.user.firstName} {session.user.lastName}</span>
       </span>
   </div>
   <img src="./pic/exit.png" height="25px" width="25px" onclick={opts.onlogout}>
