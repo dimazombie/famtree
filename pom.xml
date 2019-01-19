@@ -153,7 +153,7 @@
         <version>1.6</version>
 
         <configuration>
-          <workingDirectory>src/main/resources/webapp</workingDirectory>
+          <workingDirectory>webapp</workingDirectory>
         </configuration>
 
         <executions>
@@ -189,7 +189,7 @@
         </dependencies>
         <executions>
           <execution>
-            <id>Copy db to target</id>
+            <id>Copy resources to target</id>
             <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -203,6 +203,10 @@
                   <includes>
                     <include>h2db.mv.db</include>
                   </includes>
+                </resource>
+                <resource>
+                  <directory>${basedir}/webapp</directory>
+                  <targetPath>classes/webapp</targetPath>
                 </resource>
               </resources>
             </configuration>
