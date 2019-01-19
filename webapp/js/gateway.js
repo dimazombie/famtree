@@ -1,5 +1,5 @@
 var gateway = new function () {
-    this.backendUri = "http://localhost:8889/api";
+    this.backendUri = "/api";
     this.backendSecurePrefix = "Bearer ";
 
     this.currentUserPath = "/users/current"

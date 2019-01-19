@@ -194,7 +194,6 @@
             <goals>
               <goal>copy-resources</goal>
             </goals>
-
             <configuration>
               <outputDirectory>${project.build.directory}</outputDirectory>
               <resources>
@@ -206,6 +205,9 @@
                 </resource>
                 <resource>
                   <directory>${basedir}/webapp</directory>
+                  <excludes>
+                    <exclude>node/**</exclude>
+                  </excludes>
                   <targetPath>classes/webapp</targetPath>
                 </resource>
               </resources>

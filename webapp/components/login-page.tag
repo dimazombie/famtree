@@ -1,7 +1,7 @@
 <login-page>
     <div class="form">
-        <input class="form-control" type="login" ref="inputLogin" value="test" placeholder="логин" required autofocus onKeyPress={checkSubmit}>
-        <input class="form-control" type="password" ref="inputPassword" value="test" placeholder="пароль" required onKeyPress={checkSubmit}>
+        <input class="form-control" type="login" ref="inputLogin" placeholder="логин" required autofocus onKeyPress={checkSubmit}>
+        <input class="form-control" type="password" ref="inputPassword" placeholder="пароль" required onKeyPress={checkSubmit}>
         <div class="btn-login" onclick={authenticate}>ВОЙТИ</div>
         <div class="error-block" if={this.errorAuthentication}>Неверный логин или пароль...</div>
     </div>
