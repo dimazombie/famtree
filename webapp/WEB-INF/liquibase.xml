@@ -39,4 +39,20 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2019-01-19--05-user-related-changes" author="dimazombie">
+        <addColumn tableName="node">
+            <column name="user_id" type="integer"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2019-01-19--06-user-related-changes" author="dimazombie">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="node"
+                                 constraintName="fk_node_user"
+                                 onDelete="RESTRICT"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+    </changeSet>
+
 </databaseChangeLog>
