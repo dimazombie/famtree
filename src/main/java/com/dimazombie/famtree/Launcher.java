@@ -13,7 +13,7 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
         Locale.setDefault(Locale.ENGLISH);
 
-        int port = 8889;
+        int port = 8888;
         if(args.length > 0) {
             port = Integer.parseInt(args[0]);
         }

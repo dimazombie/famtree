@@ -29,7 +29,8 @@ public class JDBCNodeRepository implements NodeRepository {
 
             String sql = "select t.id, t.parent_id, t.name, t.bio, t.image_id, t.date_of_birth " +
                     "from NODE t " +
-                    "where t.parent_id is null and t.user_id = ?";
+                    "where t.parent_id is null and t.user_id = ? " +
+                    "order by t.created_date";
             logger.debug("SQL: " + sql);
             logger.debug("with bind var: " + user.getId());
 
@@ -126,7 +127,8 @@ public class JDBCNodeRepository implements NodeRepository {
 
         String sql = "select t.id, t.parent_id, t.name, t.bio, t.image_id, t.date_of_birth " +
                 "from NODE t " +
-                "where t.parent_id = ? and t.user_id = ?";
+                "where t.parent_id = ? and t.user_id = ?" +
+                "order by t.created_date";
         logger.debug("SQL: " + sql);
         logger.debug("with bind var: " + nodeId);
         logger.debug("with bind var: " + user.getId());
@@ -172,7 +174,7 @@ public class JDBCNodeRepository implements NodeRepository {
             conn = ds.getConnection();
 
             if(node.getId() == null) {
-                String sql = "insert into NODE(parent_id, name, bio, image_id, date_of_birth, user_id) values (?, ?, ?, ?, ?, ?)";
+                String sql = "insert into NODE(parent_id, name, bio, image_id, date_of_birth, user_id, created_date) values (?, ?, ?, ?, ?, ?, sysdate)";
                 logger.debug("SQL: " + sql);
                 logger.debug("with bind var: " + node.getParentId());
                 logger.debug("with bind var: " + node.getName());
@@ -206,7 +208,8 @@ public class JDBCNodeRepository implements NodeRepository {
                 logger.debug("rs: " + node);
             } else {
                 String sql = "update NODE t set t.parent_id = ?, t.name = ?, t.bio = ?, t.image_id = ?, " +
-                        "t.date_of_birth = ? where t.id = ? and t.user_id = ?";
+                        "t.date_of_birth = ?, t.modified_date = sysdate " +
+                        "where t.id = ? and t.user_id = ?";
                 logger.debug("SQL: " + sql);
                 logger.debug("with bind var: " + node.getParentId());
                 logger.debug("with bind var: " + node.getName());

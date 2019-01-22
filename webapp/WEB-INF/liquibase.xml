@@ -55,4 +55,11 @@
                                  referencedTableName="user"/>
     </changeSet>
 
+    <changeSet id="2019-01-22--07-node-metadata" author="dimazombie">
+        <addColumn tableName="node">
+            <column name="created_date" type="datetime"/>
+            <column name="modified_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
